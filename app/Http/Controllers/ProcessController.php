@@ -9,20 +9,37 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class ProcessController extends Controller
 {
+    const SOURCE_FILES_FOLDER = 'docs/';
+
     public function index(): string
     {
-        $sHtmlFile = file_get_contents('R-1.html');
+        $aFilesToParse = scandir('docs', SCANDIR_SORT_DESCENDING);
+        array_pop($aFilesToParse);
+        array_pop($aFilesToParse);
+        $aFilesToParse = array_reverse($aFilesToParse);
+
+        if (empty($aFilesToParse)) abort(404);
+
+        $sHtmlFile = '';
+        foreach ($aFilesToParse as $sFile) {
+            $sHtmlFile .= file_get_contents(self::SOURCE_FILES_FOLDER . $sFile);
+        }
+
         $sTable = preg_replace('/style=".*?"/', '', $sHtmlFile);
-        $sTable = preg_replace('/<p>\s*<\/p>/', '', $sTable);
+        $sTable = preg_replace('/<p>\s+<\/p>/', '', $sTable);
+        $sTable = preg_replace('/<p[^>]*>(?:\s|&nbsp;)*<\/p>/', '', $sTable);
 
         return view('processed-tables', compact('sTable'));
     }
 
     public function process(Request $request)
     {
-        var_dump($request->tables);
-        if (file_exists('test.xlsx')) {
-            $currentDocument = IOFactory::load("test.xlsx");
+        $sSpreadsheetName = '2003';
+        $sSpreadsheetName .= '.xlsx';
+
+        echo $request->tables;
+        if (file_exists($sSpreadsheetName)) {
+            $currentDocument = IOFactory::load($sSpreadsheetName);
 
             $oReader = new Html();
             $oReader->setSheetIndex($currentDocument->getSheetCount());
@@ -30,7 +47,7 @@ class ProcessController extends Controller
             $oSpreadsheet->getActiveSheet()->setTitle($request->header);
 
             $oWriter = IOFactory::createWriter($oSpreadsheet, 'Xlsx');
-            $oWriter->save('test.xlsx');
+            $oWriter->save($sSpreadsheetName);
         } else {
             var_dump($request->tables);
 
@@ -41,7 +58,7 @@ class ProcessController extends Controller
             $oReader = new Html();
             $oSpreadsheet = $oReader->loadFromString($request->tables, $activeWorksheet->getParent());
             $oWriter = IOFactory::createWriter($oSpreadsheet, 'Xlsx');
-            $oWriter->save('test.xlsx');
+            $oWriter->save($sSpreadsheetName);
         };
     }
 }

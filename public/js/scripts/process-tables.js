@@ -53,15 +53,6 @@ tables.each(function () {
 
     let hasCaption = isPrevCaption || isPrevPrevCaption;
     let hasSubCaption = isPrevSubCaption || isPrevPrevSubCaption;
-    let isTableContinue = isPrevContinue || isPrevPrevContinue
-
-    console.log(`hasCaption: ${hasCaption}`);
-    console.log(`hasSubCaption: ${hasSubCaption}`);
-    console.log(`isContinue: ${isTableContinue}`);
-
-    console.log(prev.length > 0);
-    console.log(prevPrev.length > 0)
-
     if (hasCaption) {
         const shortCaptionRegex = /\d\.\d+\.?\s/;
         let shortCaption = '';
