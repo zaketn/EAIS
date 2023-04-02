@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Html;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ProcessController extends Controller
 {
@@ -29,17 +27,16 @@ class ProcessController extends Controller
             $oReader = new Html();
             $oReader->setSheetIndex($currentDocument->getSheetCount());
             $oSpreadsheet = $oReader->loadFromString($request->tables, $currentDocument);
-            $oSpreadsheet->getActiveSheet()->setTitle('w' . $currentDocument->getSheetCount());
+            $oSpreadsheet->getActiveSheet()->setTitle($request->header);
 
             $oWriter = IOFactory::createWriter($oSpreadsheet, 'Xlsx');
             $oWriter->save('test.xlsx');
         } else {
-            preg_match('/\d\.\d/', $request->header, $sNumber);
             var_dump($request->tables);
 
             $spreadsheet = new Spreadsheet();
             $activeWorksheet = $spreadsheet->getActiveSheet();
-            $activeWorksheet->setTitle($sNumber[0]);
+            $activeWorksheet->setTitle($request->header);
 
             $oReader = new Html();
             $oSpreadsheet = $oReader->loadFromString($request->tables, $activeWorksheet->getParent());
