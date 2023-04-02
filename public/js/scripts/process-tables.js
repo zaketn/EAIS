@@ -1,11 +1,16 @@
 $('table').each(function () {
+    let prevPrevPrev = $(this).prev().prev().prev().find('span');
     let prevPrev = $(this).prev().prev().find('span');
     let prev = $(this).prev().find('span');
 
-    if (isContinue(prev.text()) || isContinue(prevPrev.text())) {
+    if (isContinue(prev.text()) || isContinue(prevPrev.text()) || isContinue(prevPrevPrev.text())) {
         let trs = $(this).find('tr');
         $(this).prevAll('table').first().find('tbody').append(trs);
         $(this).remove();
+
+        if (isContinue(prev.text())) prev.parent().remove();
+        if (isContinue(prevPrev.text())) prevPrev.parent().remove();
+        if (isContinue(prevPrevPrev.text())) prevPrevPrev.parent().remove();
     }
 })
 
@@ -23,13 +28,12 @@ const tables = $('table');
 // caption.textContent = $(tables[0]).prev().prev().find('span b').text();
 
 tables.each(function () {
+
+    let prevPrevPrev = $(this).prev().prev().prev().find('span');
     let prevPrev = $(this).prev().prev().find('span');
     let prev = $(this).prev().find('span');
 
-    console.log(this);
-    console.log(`prevPrev: ${prevPrev.text()}`);
-    console.log(`prev:  ${prev.text()}`);
-
+    let isPrevPrevPrevCaption = false;
     let isPrevPrevCaption = false;
     let isPrevCaption = false;
 
@@ -38,6 +42,10 @@ tables.each(function () {
 
     let isPrevPrevContinue = false;
     let isPrevContinue = false;
+
+    if (prevPrevPrev.text() !== undefined) {
+        isPrevPrevPrevCaption = isValidCaption(prevPrevPrev.text())
+    }
 
     if (prevPrev.text() !== undefined) {
         isPrevPrevContinue = isContinue(prevPrev.text());
@@ -51,15 +59,21 @@ tables.each(function () {
         isPrevSubCaption = isValidSubCaption(prev.text())
     }
 
-    let hasCaption = isPrevCaption || isPrevPrevCaption;
+    let hasCaption = isPrevCaption || isPrevPrevCaption || isPrevPrevPrevCaption;
     let hasSubCaption = isPrevSubCaption || isPrevPrevSubCaption;
+
+    console.log(this);
+    console.log(isPrevPrevPrevCaption);
+
     if (hasCaption) {
-        const shortCaptionRegex = /\d\.\d+\.?\s/;
+        const shortCaptionRegex = /\d+\.\d+\.?\s/;
         let shortCaption = '';
         if (prevPrev.text() !== undefined && prevPrev.text().match(shortCaptionRegex) !== null) {
             shortCaption = prevPrev.text().match(shortCaptionRegex)[0]
-        } else {
+        } else if (prev.text() !== undefined && prev.text().match(shortCaptionRegex) !== null) {
             shortCaption = prev.text().match(shortCaptionRegex)[0]
+        } else if (prevPrevPrev.text() !== undefined && prevPrevPrev.text().match(shortCaptionRegex) !== null) {
+            shortCaption = prevPrevPrev.text().match(shortCaptionRegex)[0]
         }
 
         $.post('process', {
@@ -67,6 +81,8 @@ tables.each(function () {
             'tables': this.outerHTML
         })
             .done(() => console.log('Данные успешно обработаны.'));
+    } else {
+        console.log(this);
     }
 })
 

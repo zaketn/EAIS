@@ -25,8 +25,7 @@ class ProcessController extends Controller
             $sHtmlFile .= file_get_contents(self::SOURCE_FILES_FOLDER . $sFile);
         }
 
-        $sTable = preg_replace('/style=".*?"/', '', $sHtmlFile);
-        $sTable = preg_replace('/<p>\s+<\/p>/', '', $sTable);
+        $sTable = preg_replace('/\sstyle=".*?"/', '', $sHtmlFile);
         $sTable = preg_replace('/<p[^>]*>(?:\s|&nbsp;)*<\/p>/', '', $sTable);
 
         return view('processed-tables', compact('sTable'));
@@ -37,7 +36,7 @@ class ProcessController extends Controller
         $sSpreadsheetName = '2003';
         $sSpreadsheetName .= '.xlsx';
 
-        echo $request->tables;
+        echo $request->header;
         if (file_exists($sSpreadsheetName)) {
             $currentDocument = IOFactory::load($sSpreadsheetName);
 
@@ -49,8 +48,6 @@ class ProcessController extends Controller
             $oWriter = IOFactory::createWriter($oSpreadsheet, 'Xlsx');
             $oWriter->save($sSpreadsheetName);
         } else {
-            var_dump($request->tables);
-
             $spreadsheet = new Spreadsheet();
             $activeWorksheet = $spreadsheet->getActiveSheet();
             $activeWorksheet->setTitle($request->header);
