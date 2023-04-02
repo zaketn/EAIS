@@ -62,22 +62,25 @@ tables.each(function () {
     let hasCaption = isPrevCaption || isPrevPrevCaption || isPrevPrevPrevCaption;
     let hasSubCaption = isPrevSubCaption || isPrevPrevSubCaption;
 
-    console.log(this);
-    console.log(isPrevPrevPrevCaption);
-
     if (hasCaption) {
         const shortCaptionRegex = /\d+\.\d+\.?\s/;
         let shortCaption = '';
+        let longCaption = '';
+
         if (prevPrev.text() !== undefined && prevPrev.text().match(shortCaptionRegex) !== null) {
-            shortCaption = prevPrev.text().match(shortCaptionRegex)[0]
+            longCaption = prevPrev.text();
+            shortCaption = prevPrev.text().match(shortCaptionRegex)[0];
         } else if (prev.text() !== undefined && prev.text().match(shortCaptionRegex) !== null) {
-            shortCaption = prev.text().match(shortCaptionRegex)[0]
+            longCaption = prev.text();
+            shortCaption = prev.text().match(shortCaptionRegex)[0];
         } else if (prevPrevPrev.text() !== undefined && prevPrevPrev.text().match(shortCaptionRegex) !== null) {
-            shortCaption = prevPrevPrev.text().match(shortCaptionRegex)[0]
+            longCaption = prevPrevPrev.text();
+            shortCaption = prevPrevPrev.text().match(shortCaptionRegex)[0];
         }
 
         $.post('process', {
-            'header': shortCaption,
+            'number': shortCaption,
+            'header': longCaption,
             'tables': this.outerHTML
         })
             .done(() => console.log('Данные успешно обработаны.'));

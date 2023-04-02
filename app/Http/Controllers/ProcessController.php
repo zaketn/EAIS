@@ -36,26 +36,46 @@ class ProcessController extends Controller
         $sSpreadsheetName = '2003';
         $sSpreadsheetName .= '.xlsx';
 
-        echo $request->header;
+        echo $request->number;
         if (file_exists($sSpreadsheetName)) {
             $currentDocument = IOFactory::load($sSpreadsheetName);
 
             $oReader = new Html();
             $oReader->setSheetIndex($currentDocument->getSheetCount());
             $oSpreadsheet = $oReader->loadFromString($request->tables, $currentDocument);
-            $oSpreadsheet->getActiveSheet()->setTitle($request->header);
+            $oSpreadsheet->getActiveSheet()->setTitle($request->number);
+
+            $mapWorksheet = $currentDocument->setActiveSheetIndex(0);
+            $row = $mapWorksheet->getHighestRow() + 1;
+            $mapWorksheet->insertNewRowBefore($row);
+            $mapWorksheet->setCellValue('A' . $row, $request->header);
+            $mapWorksheet->setCellValue('B' . $row, 'Ссылка');
+            $mapWorksheet->getCell('B' . $row)->getHyperlink()->setUrl("sheet://'" . $request->number . "'!A1");;
 
             $oWriter = IOFactory::createWriter($oSpreadsheet, 'Xlsx');
             $oWriter->save($sSpreadsheetName);
         } else {
             $spreadsheet = new Spreadsheet();
-            $activeWorksheet = $spreadsheet->getActiveSheet();
-            $activeWorksheet->setTitle($request->header);
+            $mapWorksheet = $spreadsheet->getActiveSheet();
+            $mapWorksheet->setTitle('Оглавление');
+
+            $activeWorksheet = $spreadsheet->createSheet();
+            $activeWorksheet->setTitle($request->number);
 
             $oReader = new Html();
-            $oSpreadsheet = $oReader->loadFromString($request->tables, $activeWorksheet->getParent());
+            $oReader->setSheetIndex(1);
+            $oSpreadsheet = $oReader->loadFromString($request->tables, $spreadsheet);
+
+            $mapWorksheet = $spreadsheet->setActiveSheetIndexByName('Оглавление');
+            $mapWorksheet->insertNewRowBefore(1);
+            $mapWorksheet->setCellValue('A1', $request->header);
+            $mapWorksheet->setCellValue('B1', 'Ссылка');
+            $mapWorksheet->getCell('B1')->getHyperlink()->setUrl("sheet://'" . $request->number . "'!A1");;
+
             $oWriter = IOFactory::createWriter($oSpreadsheet, 'Xlsx');
             $oWriter->save($sSpreadsheetName);
+
+
         };
     }
 }

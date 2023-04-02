@@ -9,6 +9,7 @@
     <title>Document</title>
 </head>
 <body>
+
 {!! $sTable !!}
 
 <script src="{{ asset('js/plugins/jquery-3.6.4.js') }}"></script>
