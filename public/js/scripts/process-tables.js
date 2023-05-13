@@ -1,4 +1,6 @@
-$('table').each(function () {
+const tables = $('table');
+
+tables.each(function () {
     let prevPrevPrev = $(this).prev().prev().prev().find('span');
     let prevPrev = $(this).prev().prev().find('span');
     let prev = $(this).prev().find('span');
@@ -14,21 +16,7 @@ $('table').each(function () {
     }
 })
 
-
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
-
-const tables = $('table');
-
-// let tableHeader = $(tables[0]).prev().prev().find('span b').text();
-// let caption = tables[0].createCaption();
-// caption.textContent = $(tables[0]).prev().prev().find('span b').text();
-
 tables.each(function () {
-
     let prevPrevPrev = $(this).prev().prev().prev().find('span');
     let prevPrev = $(this).prev().prev().find('span');
     let prev = $(this).prev().find('span');
@@ -37,30 +25,11 @@ tables.each(function () {
     let isPrevPrevCaption = false;
     let isPrevCaption = false;
 
-    let isPrevPrevSubCaption = false;
-    let isPrevSubCaption = false;
-
-    let isPrevPrevContinue = false;
-    let isPrevContinue = false;
-
-    if (prevPrevPrev.text() !== undefined) {
-        isPrevPrevPrevCaption = isValidCaption(prevPrevPrev.text())
-    }
-
-    if (prevPrev.text() !== undefined) {
-        isPrevPrevContinue = isContinue(prevPrev.text());
-        isPrevPrevCaption = isValidCaption(prevPrev.text())
-        isPrevPrevSubCaption = isValidSubCaption(prevPrev.text())
-    }
-
-    if (prev.text() !== undefined) {
-        isPrevContinue = isContinue(prev.text());
-        isPrevCaption = isValidCaption(prev.text())
-        isPrevSubCaption = isValidSubCaption(prev.text())
-    }
+    if (prevPrevPrev.text() !== undefined) isPrevPrevPrevCaption = isValidCaption(prevPrevPrev.text())
+    if (prevPrev.text() !== undefined) isPrevPrevCaption = isValidCaption(prevPrev.text())
+    if (prev.text() !== undefined) isPrevCaption = isValidCaption(prev.text())
 
     let hasCaption = isPrevCaption || isPrevPrevCaption || isPrevPrevPrevCaption;
-    let hasSubCaption = isPrevSubCaption || isPrevPrevSubCaption;
 
     if (hasCaption) {
         const shortCaptionRegex = /\d+\.\d+\.?\s/;
@@ -81,7 +50,7 @@ tables.each(function () {
         $.post('process', {
             'number': shortCaption,
             'header': longCaption,
-            'tables': this.outerHTML
+            'table': this.outerHTML
         })
             .done(() => console.log('Данные успешно обработаны.'));
     } else {
@@ -93,12 +62,6 @@ function isValidCaption(caption) {
     const results = caption.match(/\d\.\d/);
 
     return results !== null;
-}
-
-function isValidSubCaption(subCaption) {
-    const results = subCaption.match(/\(\p{L}|\p{L}\)/u);
-
-    return results !== null
 }
 
 function isContinue(caption) {
