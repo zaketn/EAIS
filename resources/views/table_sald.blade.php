@@ -1,7 +1,7 @@
 @extends('layout_navbar')
 @section('content')
 
-    <div class="container-fluid">
+    <div class="container">
         <p></p>
 
         <div class="list-group list-group-horizontal" id="list-tab" role="tablist">

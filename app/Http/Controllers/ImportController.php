@@ -2,27 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tables\Table;
 use App\Services\BinaryTree\BinaryTree;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ImportController extends Controller
 {
     public function import()
     {
-        $inputFileName = '123.xlsx';
+        $inputFileName = 'storage/main.xlsx';
         $inputFileType = 'Xlsx';
 
         $reader = IOFactory::createReader($inputFileType);
         $spreadsheet = $reader->load($inputFileName);
-        $spreadsheet->setActiveSheetIndex(1);
+        $spreadsheet->setActiveSheetIndex(19);
         $worksheet = $spreadsheet->getActiveSheet();
         $rows = $worksheet->toArray();
+        Log::info($rows);
+        Table::query()
+            ->create([
+                'year' => 2021,
+                'name' => 'ОСНОВНЫЕ ФИНАНСОВЫЕ ПОКАЗАТЕЛИ ПО ВИДАМ ЭКОНОМИЧЕСКОЙ ДЕЯТЕЛЬНОСТИ',
+                'data' => json_encode($rows)
+        ]);
+
+
+
+        die();
         $columns = array_slice($rows, 0, 3);
 
         $oBinaryTree = new BinaryTree($columns);
         $oBinaryTree->create();
-        die();
+//        die();
 
         $sizes = [];
         foreach ($columns as $rowNumber => $row) {

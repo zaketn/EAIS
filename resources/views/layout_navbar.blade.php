@@ -8,13 +8,13 @@
     <title>ЕАИС</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+    @vite('resources/js/app.js')
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;" >
-    <div class="container-fluid">
-        <a class="navbar-brand">ЕАИС</a>
+<nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: #e3f2fd;" >
+    <div class="container">
+        <a href="/" class="navbar-brand">ЕАИС</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -23,27 +23,8 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/">Главная</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Список таблиц
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/table_sald">САЛЬДИРОВАННЫЙ ФИНАНСОВЫЙ РЕЗУЛЬТАТ</a></li>
-                        <li><a class="dropdown-item" href="/table_number_workers">ЧИСЛЕННОСТЬ РАБОТНИКОВ ПРЕДПРИЯТИЙ</a></li>
-                        <li><a class="dropdown-item" href="/table_financial_stability">ПЛАТЕЖЕСПОСОБНОСТЬ И ФИНАНСОВАЯ УСТОЙЧИВОСТЬ ПРЕДПРИЯТИЙ</a></li>
-                        <li><a class="dropdown-item" href="/table_main_financial">ОСНОВНЫЕ ФИНАНСОВЫЕ ПОКАЗАТЕЛИ ПО ВИДАМ ЭКОНОМИЧЕСКОЙ ДЕЯТЕЛЬНОСТИ</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Список графиков
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/graph_sald">САЛЬДИРОВАННЫЙ ФИНАНСОВЫЙ РЕЗУЛЬТАТ</a></li>
-                        <li><a class="dropdown-item" href="/graph_number_workers">ЧИСЛЕННОСТЬ РАБОТНИКОВ ПРЕДПРИЯТИЙ</a></li>
-                        <li><a class="dropdown-item" href="/graph_financial_stability">ПЛАТЕЖЕСПОСОБНОСТЬ И ФИНАНСОВАЯ УСТОЙЧИВОСТЬ ПРЕДПРИЯТИЙ</a></li>
-                        <li><a class="dropdown-item" href="/graph_main_financial">ОСНОВНЫЕ ФИНАНСОВЫЕ ПОКАЗАТЕЛИ ПО ВИДАМ ЭКОНОМИЧЕСКОЙ ДЕЯТЕЛЬНОСТИ</a></li>
-                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/stats">Статистика</a>
                 </li>
             </ul>
             <form class="d-flex">
