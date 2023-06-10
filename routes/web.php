@@ -8,24 +8,22 @@ use App\Http\Controllers\TestController;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/test', [TestController::class, 'test'])->name('test');
-Route::get('/import', [ImportController::class, 'import'])->name('import');
+Route::controller(IndexController::class)->group(function(){
+    Route::get('/', 'home');
+    Route::get('/stats', 'graph_sald');
+    Route::get('/graph_financial_stability', 'graph_financial_stability');
+});
 
-Route::get('/process', [ProcessController::class, 'index'])->name('index');
-Route::post('/process', [ProcessController::class, 'process'])
-    ->withoutMiddleware(VerifyCsrfToken::class)
-    ->name('process');
+Route::controller(TableController::class)->group(function(){
+    Route::post('tables/get-meta', 'meta');
+    Route::post('tables', 'get');
+    Route::post('tables/list', 'getTablesList');
+});
 
-Route::get('/', [IndexController::class, 'home']);
-Route::get('/table_sald', [IndexController::class, 'table_sald']);
-Route::get('/table_number_workers', [IndexController::class, 'table_number_workers']);
-Route::get('/table_financial_stability', [IndexController::class, 'table_financial_stability']);
-Route::get('/table_main_financial', [IndexController::class, 'table_main_financial']);
-Route::get('/stats', [IndexController::class, 'graph_sald']);
-Route::get('/graph_number_workers', [IndexController::class, 'graph_number_workers']);
-Route::get('/graph_financial_stability', [IndexController::class, 'graph_financial_stability']);
-Route::get('/graph_main_financial', [IndexController::class, 'graph_main_financial']);
+Route::controller(ProcessController::class)->group(function(){
+    Route::get('/process', 'index')->name('process.index');
+    Route::post('/process', 'process')
+        ->withoutMiddleware(VerifyCsrfToken::class)
+        ->name('process');
+});
 
-Route::post('tables/get-meta', [TableController::class, 'meta']);
-Route::post('tables/{id}', [TableController::class, 'get']);
-Route::post('tables/list/{year}', [TableController::class, 'getTablesList']);

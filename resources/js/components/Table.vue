@@ -1,5 +1,5 @@
 <template>
-    <hot-table :height="width" :width="height" :data="data" :rowHeaders="true" :colHeaders="true"></hot-table>
+    <hot-table :height="height" :width="width" :data="data" :rowHeaders="true" :colHeaders="true"></hot-table>
 </template>
 
 <script>

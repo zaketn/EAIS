@@ -5,23 +5,23 @@
             <div class="col-1">
                 <label for="year" class="form-label">Год</label>
                 <select @change="yearSelected" v-model="yearSelect"
-                    class="form-select mb-3" id="year">
+                        class="form-select mb-3" id="year">
                     <option disabled>Год</option>
                     <option value=""></option>
-                    <option v-for="meta in metaData"
-                        :value="meta.year">
+                    <option v-for="meta in availableTables"
+                            :value="meta.year">
                         {{ getYearFromDate(meta.year) }}
                     </option>
                 </select>
             </div>
-            <div @change="tableOpened" class="col-5" ref="tableBlock">
+            <div class="col-5" ref="tableBlock">
                 <label for="table" class="form-label">Таблица</label>
                 <select @change="tableOpened" v-model="tableSelect"
                         class="form-select mb-3" id="table">
                     <option disabled>Выберите таблицу</option>
                     <option value=""></option>
                     <option v-for="table in tablesByYear"
-                        :value="table.id">
+                            :value="table.id">
                         {{ table.name }}
                     </option>
 
@@ -29,9 +29,8 @@
             </div>
         </div>
         <div class="row">
-            <div v-if="isTableSelected" class="col-12" id="table-block"
-                 :class="{'col-12': isTableSelected, 'col-6': isStatisticsShowing}">
-                <Table :data="JSON.parse(tablesData.data)" :width="tableWidth" :height="tableHeight"/>
+            <div v-if="showTable" class="col-12" id="table-block" >
+                <Table :data="JSON.parse(tableData.data)" :width="tableWidth" :height="tableHeight"/>
             </div>
         </div>
     </div>
@@ -43,63 +42,69 @@ import axios from 'axios';
 import Table from './Table.vue'
 
 export default defineComponent({
-    mounted() {
-        this.getMetaData()
-        this.$refs.tableBlock.style.display = 'none'
-    },
-
     components: {
         Table
+    },
+
+    mounted() {
+        this.getTablesList()
+        this.$refs.tableBlock.style.display = 'none'
     },
 
     data() {
         return {
             isYearSelected: false,
-            isTableSelected: false,
-            isStatisticsShowing: false,
+            showTable: false,
 
-            tableWidth: 1300,
-            tableHeight: 1300,
-
-            metaData: null,
-            tablesData: null,
+            tableSelect: null,
+            yearSelect: null,
+            availableTables: null,
             tablesByYear: null,
+
+            tableWidth: 1400,
+            tableHeight: 1400,
+            tableData: null,
         }
     },
     methods: {
-        tableOpened(event) {
-            this.isTableSelected = event.target.value !== ''
-
-            axios
-                .post('tables/' + this.tableSelect, this.tableSelect)
-                .then((response) => this.tablesData = response.data)
-                .catch((error) => console.log(error))
-
-            this.isTableSelected = !this.isTableSelected
-            this.isTableSelected = !this.isTableSelected
-        },
-
         yearSelected(event) {
-            this.isYearSelected = event.target.value === '' ? null : !this.isYearSelected
-            let tableBlock = this.$refs.tableBlock
-            if(tableBlock.style.display === 'block') this.isTableSelected = false
-            else tableBlock.style.display = 'block'
-            axios
-                .post('tables/list/' + this.yearSelect, this.yearSelect)
-                .then((response) => this.tablesByYear = response.data)
-                .catch((error) => console.log(error))
+            this.isYearSelected = event.target.value === '' ? false : !this.isYearSelected
+            if (this.isYearSelected) {
+                let tableBlock = this.$refs.tableBlock
+                if (tableBlock.style.display === 'block') this.showTable = false
+                else tableBlock.style.display = 'block'
+                axios
+                    .post('tables/list/', {year: this.yearSelect})
+                    .then((response) => this.tablesByYear = response.data)
+                    .catch((error) => console.log(error))
+            }
         },
 
-        getMetaData() {
+        tableOpened(event) {
+            let notEmptySelected = event.target.value !== ''
+            let ths = this
+
+            if (notEmptySelected) {
+                axios
+                    .post('tables/', {id: this.tableSelect})
+                    .then(function(response){
+                        ths.tableData = response.data
+                        ths.showTable = notEmptySelected
+                    })
+                    .catch((error) => console.log(error))
+            }
+        },
+
+        getTablesList() {
             axios
                 .post('tables/get-meta')
-                .then((response) => this.metaData = response.data)
+                .then((response) => this.availableTables = response.data)
                 .catch((error) => console.log(error))
         },
 
         getYearFromDate(date) {
             return new Date(date).getFullYear()
-        }
+        },
     }
 })
 </script>
