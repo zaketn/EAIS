@@ -13,25 +13,13 @@ class TableController extends Controller
     public function meta() : array
     {
         return Table::query()
-            ->select(['year'])
-            ->distinct()
+            ->select(['id', 'year', 'name'])
             ->get()
+            ->groupBy('year')
             ->toArray();
     }
 
-    public function getTablesList(Request $request) : array
-    {
-        return Table::query()
-            ->select(['id', 'name'])
-            ->where([
-                'year' => $request->year
-            ])
-            ->distinct()
-            ->get()
-            ->toArray();
-    }
-
-    public function get(Request $request)
+    public function get(Request $request) : array
     {
         return Table::query()
             ->select('data')

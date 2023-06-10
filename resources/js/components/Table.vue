@@ -1,5 +1,5 @@
 <template>
-    <hot-table :height="height" :width="width" :data="data" :rowHeaders="true" :colHeaders="true"></hot-table>
+    <hot-table :data="data" :width="width" :height="height" :rowHeaders="true" stretchH="all"></hot-table>
 </template>
 
 <script>
@@ -10,17 +10,17 @@ import 'handsontable/dist/handsontable.full.css';
 
 registerAllModules();
 
-export default defineComponent({
+export default {
     props: {
         data: Array,
-        width: Number,
-        height: Number,
+        width: String,
+        height: String,
     },
 
     components: {
         HotTable,
     }
-});
+};
 
 </script>
 

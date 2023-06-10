@@ -27,10 +27,6 @@
                     <a class="nav-link" aria-current="page" href="/stats">Статистика</a>
                 </li>
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
-                <button class="btn btn-outline-success" type="submit">Поиск</button>
-            </form>
         </div>
     </div>
 </nav>

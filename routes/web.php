@@ -16,8 +16,7 @@ Route::controller(IndexController::class)->group(function(){
 
 Route::controller(TableController::class)->group(function(){
     Route::post('tables/get-meta', 'meta');
-    Route::post('tables', 'get');
-    Route::post('tables/list', 'getTablesList');
+    Route::post('table', 'get');
 });
 
 Route::controller(ProcessController::class)->group(function(){
