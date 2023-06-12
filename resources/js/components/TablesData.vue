@@ -1,8 +1,52 @@
+<script setup>
+import {computed, onBeforeMount, ref} from 'vue';
+import axios from 'axios';
+import Table from './partials/Table.vue'
+import AddTable from "./modals/ImportTable.vue";
+
+const tablesMeta = ref({})
+const selectedYear = ref(null)
+const selectedTable = ref(null)
+const tableData = ref(null)
+
+const years = computed({
+    get: () => Object.keys(tablesMeta.value),
+    set: undefined
+})
+
+const tables = computed({
+    get: () => tablesMeta.value[parseInt(selectedYear.value)],
+    set: undefined
+})
+
+onBeforeMount(function () {
+    getTablesMeta()
+})
+
+const getTableData = () => axios
+    .post('/table', {id: selectedTable.value})
+    .then((response) => tableData.value = JSON.parse(response.data.data))
+    .finally(() => console.log(tableData.value))
+    .catch((response) => console.log(response.data))
+
+const getTablesMeta = () => axios
+    .post('/tables/get-meta')
+    .then((response) => tablesMeta.value = response.data)
+    .catch((response) => console.log(response.data))
+
+</script>
+
+
 <template>
     <div class="container">
         <div class="card mb-4">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 Выберите таблицу для просмотра
+                <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addTableModal">+
+                </button>
+                <Teleport to="#modal-container">
+                    <AddTable @data-added="getTablesMeta"/>
+                </Teleport>
             </div>
             <div class="row px-3 py-2">
                 <div class="col-2">
@@ -34,50 +78,3 @@
         </div>
     </div>
 </template>
-
-<script>
-import {computed, onBeforeMount, ref} from 'vue';
-import axios from 'axios';
-import Table from './Table.vue'
-
-export default {
-    components: {
-        Table
-    },
-
-    setup() {
-        const tablesMeta = ref({})
-        const selectedYear = ref(null)
-        const selectedTable = ref(null)
-        const tableData = ref(null)
-
-        const years = computed({
-            get: () => Object.keys(tablesMeta.value),
-            set: undefined
-        })
-
-        const tables = computed({
-            get: () => tablesMeta.value[parseInt(selectedYear.value)],
-            set: undefined
-        })
-
-        onBeforeMount(function () {
-            getTablesMeta()
-        })
-
-        const getTableData = () => axios
-            .post('/table', {id: selectedTable.value})
-            .then((response) => tableData.value = JSON.parse(response.data.data))
-            .catch((response) => console.log(response.data))
-
-        const getTablesMeta = () => axios
-            .post('/tables/get-meta')
-            .then((response) => tablesMeta.value = response.data)
-            .catch((response) => console.log(response.data))
-
-        return {
-            years, tables, selectedYear, selectedTable, tableData, getTableData
-        }
-    }
-}
-</script>

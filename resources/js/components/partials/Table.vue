@@ -1,9 +1,3 @@
-<template>
-    <div id="table-container">
-        <div ref="table"></div>
-    </div>
-</template>
-
 <script>
 import {onMounted, ref, watch} from 'vue';
 
@@ -32,6 +26,7 @@ export default {
         watch(() => props.data, () => updateTable())
 
         function updateTable() {
+            console.log(props.data)
             table.value = new Handsontable(container, {
                 data: props.data,
                 width: props.width,
@@ -46,6 +41,12 @@ export default {
 };
 
 </script>
+
+<template>
+    <div id="table-container">
+        <div ref="table"></div>
+    </div>
+</template>
 
 <style>
 .hot-display-license-info {

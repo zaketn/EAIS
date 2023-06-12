@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class TableController extends Controller
 {
-    public function meta() : array
+    public function meta(): array
     {
         return Table::query()
             ->select(['id', 'year', 'name'])
@@ -19,11 +19,27 @@ class TableController extends Controller
             ->toArray();
     }
 
-    public function get(Request $request) : array
+    public function get(Request $request): array
     {
         return Table::query()
             ->select('data')
             ->findOrFail($request->id)
             ->toArray();
+    }
+
+    public function save(Request $request): Model|Builder
+    {
+        $request->validate([
+            'year' => 'required',
+            'name' => 'required',
+            'data' => 'required'
+        ]);
+
+        return Table::query()
+            ->create([
+                'year' => $request->year,
+                'name' => $request->name,
+                'data' => json_encode($request->data)
+            ]);
     }
 }
