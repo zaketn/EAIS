@@ -24,7 +24,7 @@
                     <a class="nav-link" aria-current="page" href="/">Главная</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/stats">Статистика</a>
+                    <a class="nav-link" aria-current="page" href="/statistics">Статистика</a>
                 </li>
             </ul>
         </div>

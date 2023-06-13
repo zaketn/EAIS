@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(IndexController::class)->group(function(){
     Route::get('/', 'home');
-    Route::get('/stats', 'graph_sald');
-    Route::get('/graph_financial_stability', 'graph_financial_stability');
 });
 
 Route::controller(TableController::class)->group(function(){
