@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tables\Table;
-use App\Services\BinaryTree\BinaryTree;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\IOFactory;

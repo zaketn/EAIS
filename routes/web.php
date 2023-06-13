@@ -3,8 +3,8 @@
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProcessController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\Tables\TableController;
-use App\Http\Controllers\TestController;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
@@ -27,3 +27,6 @@ Route::controller(ProcessController::class)->group(function(){
         ->name('process');
 });
 
+Route::controller(StatisticsController::class)->group(function(){
+    Route::get('/statistics', 'index')->name('stats.index');
+});
