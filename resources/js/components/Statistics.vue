@@ -103,7 +103,7 @@ onBeforeMount(function () {
 })
 
 const getTablesMeta = () => axios
-    .post('/tables/get-meta')
+    .get('/tables')
     .then((response) => tablesMeta.value = response.data)
     .catch((response) => console.log(response.data))
 

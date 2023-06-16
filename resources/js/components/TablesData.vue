@@ -24,13 +24,13 @@ onBeforeMount(function () {
 })
 
 const getTableData = () => axios
-    .post('/table', {id: selectedTable.value})
+    .get(`/tables/${selectedTable.value}`)
     .then((response) => tableData.value = JSON.parse(response.data.data))
     .finally(() => console.log(tableData.value))
     .catch((response) => console.log(response.data))
 
 const getTablesMeta = () => axios
-    .post('/tables/get-meta')
+    .get('/tables')
     .then((response) => tablesMeta.value = response.data)
     .catch((response) => console.log(response.data))
 
