@@ -1,8 +1,8 @@
 <script setup>
 import {computed, onBeforeMount, ref} from 'vue';
 import axios from 'axios';
-import Table from './partials/Table.vue'
-import AddTable from "./modals/ImportTable.vue";
+import Table from './Partials/Table.vue'
+import AddTable from "./Modals/ImportTable.vue";
 
 const tablesMeta = ref({})
 const selectedYear = ref(null)
@@ -24,13 +24,13 @@ onBeforeMount(function () {
 })
 
 const getTableData = () => axios
-    .get(`/tables/${selectedTable.value}`)
+    .get(`/api/tables/${selectedTable.value}`)
     .then((response) => tableData.value = JSON.parse(response.data.data))
     .finally(() => console.log(tableData.value))
     .catch((response) => console.log(response.data))
 
 const getTablesMeta = () => axios
-    .get('/tables')
+    .get('/api/tables')
     .then((response) => tablesMeta.value = response.data)
     .catch((response) => console.log(response.data))
 

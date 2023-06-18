@@ -4,14 +4,16 @@ import vue from "@vitejs/plugin-vue"
 
 export default defineConfig({
     plugins: [
+        vue(),
         laravel({
             input: [
-                'resources/sass/app.scss',
+                'resources/css/Plugins/bootstrap.min.css',
+                'resources/js/Plugins/bootstrap.bundle.min.js',
+                'resources/css/app.css',
                 'resources/js/app.js',
             ],
             refresh: true,
         }),
-        vue()
     ],
     resolve: {
         alias: {

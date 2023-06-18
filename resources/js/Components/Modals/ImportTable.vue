@@ -40,7 +40,7 @@ const save = async (event) => {
     if (name && description && year && file) {
         for (let sheet in loadedSheets) {
             axios
-                .post('/tables', {
+                .post('/api/tables', {
                     year: year.value,
                     name: name.value,
                     description: description.value,
