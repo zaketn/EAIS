@@ -1,14 +1,20 @@
 <script setup>
-import {computed, onBeforeMount, ref} from 'vue';
+import {computed, onBeforeMount, onMounted, ref} from 'vue';
 import axios from 'axios';
+import { PlusCircleIcon } from '@heroicons/vue/24/outline';
+import { Modal } from 'flowbite';
 import Table from '../Partials/Table.vue'
 import AddTable from "../Modals/ImportTable.vue";
 import Breadcrumbs from "../Partials/Breadcrumbs.vue";
+
 
 const tablesMeta = ref({})
 const selectedYear = ref(null)
 const selectedTable = ref(null)
 const tableData = ref(null)
+
+let importModal = undefined
+let fbModal = undefined
 
 const years = computed({
     get: () => Object.keys(tablesMeta.value),
@@ -20,8 +26,13 @@ const tables = computed({
     set: undefined
 })
 
-onBeforeMount(function () {
+onBeforeMount(() => {
     getTablesMeta()
+})
+
+onMounted(() => {
+    importModal = document.getElementById('addTableModal')
+    fbModal = new Modal(importModal)
 })
 
 const getTableData = () => axios
@@ -46,17 +57,13 @@ const getTablesMeta = () => axios
         <div class="flex justify-between dark:text-white">
             <p class="text-2xl text-gray-900 dark:text-white">Выберите таблицу для просмотра</p>
             <button
+                @click="fbModal.show()"
                 type="button"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                data-modal-toggle="addTableModal"
-                data-modal-target="addTableModal">
-                <svg class="w-5 h-5" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
-                    <path
-                        d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z"/>
-                </svg>
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <PlusCircleIcon class="h-6 w-6 text-white" />
             </button>
             <Teleport to="#modal-container">
-                <AddTable @data-added="getTablesMeta"/>
+                <AddTable :modal-object="fbModal" @data-added="getTablesMeta"/>
             </Teleport>
         </div>
 
