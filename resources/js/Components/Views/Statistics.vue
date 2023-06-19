@@ -2,7 +2,7 @@
 
 import {computed, onBeforeMount, ref} from 'vue';
 import axios from 'axios';
-import Line from './Partials/LineChart.vue'
+import Line from '../Partials/LineChart.vue'
 
 const tablesMeta = ref({})
 const selectedYear = ref(null)

@@ -1,8 +1,8 @@
 <script setup>
 import {computed, onBeforeMount, ref} from 'vue';
 import axios from 'axios';
-import Table from './Partials/Table.vue'
-import AddTable from "./Modals/ImportTable.vue";
+import Table from '../Partials/Table.vue'
+import AddTable from "../Modals/ImportTable.vue";
 
 const tablesMeta = ref({})
 const selectedYear = ref(null)

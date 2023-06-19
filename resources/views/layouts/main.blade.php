@@ -10,13 +10,8 @@
     @vite(['resources/css/app.css'])
 </head>
 <body class="dark:bg-gray-900">
-<main id="app">
-    <navbar />
 
-    @yield('content')
-</main>
-
-
+<div id="app"></div>
 
 @vite(['resources/js/app.js',])
 

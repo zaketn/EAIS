@@ -3,7 +3,7 @@ import axios from "axios";
 import {onBeforeMount, ref} from "vue";
 
 const routes = {
-    home: '/home',
+    home: '/',
     tables: '/tables',
     statistics: '/statistics',
     logout: '/logout'
@@ -21,7 +21,6 @@ const burgerMenu = ref()
 let currentUser = ref({});
 
 onBeforeMount(() => {
-    themeInit()
     getCurrentUser()
 })
 
@@ -33,17 +32,6 @@ const getCurrentUser = () => {
     axios.get('/users')
         .then((response) => currentUser.value = response.data)
         .catch((error) => console.log(error))
-}
-
-const themeInit = () => {
-    const localStorageTheme = localStorage.getItem('theme')
-
-    if(localStorage.getItem('theme')){
-        document.documentElement.classList.add(localStorageTheme);
-    } else {
-        localStorage.setItem('theme', 'light');
-        document.documentElement.classList.add('light');
-    }
 }
 
 const switchTheme = () => {
@@ -70,11 +58,10 @@ const toggleBurger = () => {
 <template>
     <nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
         <div class="container mx-auto">
-
-            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <a :href="routes.home" class="flex items-center">
+            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-4">
+                <router-link :to="routes.home" class="flex items-center">
                     <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">ЕАИС</span>
-                </a>
+                </router-link>
                 <button data-collapse-toggle="burger-dropdown" type="button"
                         class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                         aria-controls="burger-dropdown" aria-expanded="false"
@@ -92,16 +79,16 @@ const toggleBurger = () => {
                      ref="burgerMenu">
                     <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                         <li>
-                            <a :href="routes.tables"
+                            <router-link to="/tables"
                                :class="[isIncludedInUrl(routes.tables) ? linksClasses.active : linksClasses.default]"
                                ref="tablesLink">
                                 Таблицы
-                            </a>
+                            </router-link>
                         </li>
                         <li>
-                            <a :href="routes.statistics"
+                            <router-link :to="routes.statistics"
                                :class="[isIncludedInUrl(routes.statistics) ? linksClasses.active : linksClasses.default]"
-                               ref="statsLink">Статистика</a>
+                               ref="statsLink">Статистика</router-link>
                         </li>
                         <li>
                             <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" @click="toggleProfileDropdown"
@@ -121,10 +108,10 @@ const toggleBurger = () => {
                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-400"
                                     aria-labelledby="dropdownLargeButton">
                                     <li>
-                                        <a href="#"
+                                        <router-link :to="routes.home"
                                            class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-black">
                                             Профиль
-                                        </a>
+                                        </router-link>
                                     </li>
                                     <li>
                                         <button

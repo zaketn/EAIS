@@ -7,8 +7,6 @@ export default defineConfig({
         vue(),
         laravel({
             input: [
-                // 'resources/css/Plugins/bootstrap.min.css',
-                // 'resources/js/Plugins/bootstrap.bundle.min.js',
                 'resources/css/app.css',
                 'resources/js/app.js',
             ],
