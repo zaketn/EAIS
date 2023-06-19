@@ -1,6 +1,7 @@
 <script setup>
 import axios from "axios";
-import {onBeforeMount, ref} from "vue";
+import {computed, onBeforeMount, ref} from "vue";
+import {useRouter, useRoute} from "vue-router";
 
 const routes = {
     home: '/',
@@ -8,6 +9,11 @@ const routes = {
     statistics: '/statistics',
     logout: '/logout'
 }
+
+const currentRouteName = computed({
+    get: () => useRoute().name,
+    set: () => undefined
+})
 
 const linksClasses = {
     active: 'block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent',
@@ -36,7 +42,7 @@ const getCurrentUser = () => {
 
 const switchTheme = () => {
     const currentTheme = localStorage.getItem('theme');
-    switch(currentTheme){
+    switch (currentTheme) {
         case 'light':
             localStorage.setItem('theme', 'dark')
             break
@@ -46,19 +52,13 @@ const switchTheme = () => {
     }
     document.documentElement.classList.toggle('dark')
 }
-
-const toggleProfileDropdown = () => {
-    dropdownProfile.value.classList.toggle('hidden')
-}
-const toggleBurger = () => {
-    burgerMenu.value.classList.toggle('hidden')
-}
 </script>
 
 <template>
-    <nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
-        <div class="container mx-auto">
-            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-4">
+    <div class="container mx-auto mt-3">
+        <nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 mb-8">
+            <div
+                class="flex flex-wrap items-center justify-between p-4 rounded border-gray-700 bg-gray-100 dark:bg-gray-800">
                 <router-link :to="routes.home" class="flex items-center">
                     <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">ЕАИС</span>
                 </router-link>
@@ -77,21 +77,23 @@ const toggleBurger = () => {
                 <div class="hidden w-full md:block md:w-auto"
                      id="burger-dropdown"
                      ref="burgerMenu">
-                    <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
                         <li>
                             <router-link to="/tables"
-                               :class="[isIncludedInUrl(routes.tables) ? linksClasses.active : linksClasses.default]"
-                               ref="tablesLink">
+                                         :class="[currentRouteName === 'tables' ? linksClasses.active : linksClasses.default]"
+                                         ref="tablesLink">
                                 Таблицы
                             </router-link>
                         </li>
                         <li>
                             <router-link :to="routes.statistics"
-                               :class="[isIncludedInUrl(routes.statistics) ? linksClasses.active : linksClasses.default]"
-                               ref="statsLink">Статистика</router-link>
+                                         :class="[currentRouteName === 'statistics' ? linksClasses.active : linksClasses.default]"
+                                         ref="statsLink">Статистика
+                            </router-link>
                         </li>
                         <li>
-                            <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" @click="toggleProfileDropdown"
+                            <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbarProfile"
+                                    @click="toggleProfileDropdown"
                                     class="flex items-center"
                                     :class="linksClasses.default">
                                 {{ currentUser.name }}
@@ -109,21 +111,21 @@ const toggleBurger = () => {
                                     aria-labelledby="dropdownLargeButton">
                                     <li>
                                         <router-link :to="routes.home"
-                                           class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-black">
+                                                     class="text-center block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
                                             Профиль
                                         </router-link>
                                     </li>
                                     <li>
                                         <button
                                             @click="switchTheme"
-                                            class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-black">
+                                            class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
                                             Тема
                                         </button>
                                     </li>
                                     <li>
                                         <form :action="routes.logout" method="post" class="m-0 p-0">
                                             <button type="submit"
-                                                    class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-black">
+                                                    class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black font-bold">
                                                 Выйти
                                             </button>
                                         </form>
@@ -134,8 +136,8 @@ const toggleBurger = () => {
                     </ul>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </div>
 </template>
 
 <style scoped>

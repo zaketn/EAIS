@@ -21,6 +21,7 @@
         "@handsontable/vue3": "^12.4.0",
         "@vitejs/plugin-vue": "^4.2.3",
         "chart.js": "^4.3.0",
+        "flowbite": "^1.6.6",
         "handsontable": "^12.4.0",
         "sheetjs": "^2.0.0",
         "vue": "^3.2.36",

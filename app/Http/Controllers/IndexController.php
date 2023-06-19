@@ -14,11 +14,11 @@ class IndexController extends Controller
 
     public function tables() : View
     {
-        return view('tables');
+        return view('home');
     }
 
     public function statistics(): View
     {
-        return view('statistics');
+        return view('home');
     }
 }

@@ -3,6 +3,7 @@ import {computed, onBeforeMount, ref} from 'vue';
 import axios from 'axios';
 import Table from '../Partials/Table.vue'
 import AddTable from "../Modals/ImportTable.vue";
+import Breadcrumbs from "../Partials/Breadcrumbs.vue";
 
 const tablesMeta = ref({})
 const selectedYear = ref(null)
@@ -38,43 +39,57 @@ const getTablesMeta = () => axios
 
 
 <template>
-    <div class="container">
-        <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                Выберите таблицу для просмотра
-                <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addTableModal">+
-                </button>
-                <Teleport to="#modal-container">
-                    <AddTable @data-added="getTablesMeta"/>
-                </Teleport>
-            </div>
-            <div class="row px-3 py-2">
-                <div class="col-2">
-                    <label for="year" class="form-label">Год</label>
-                    <select v-model="selectedYear"
-                            class="form-select mb-3" id="year">
-                        <option disabled>Год</option>
-                        <option v-for="year in years" :value="year" :key="year">
-                            {{ year }}
-                        </option>
-                    </select>
-                </div>
-                <div class="col-10" ref="tableBlock" v-show="selectedYear !== null">
-                    <label for="table" class="form-label">Таблица</label>
-                    <select @change="getTableData" class="form-select mb-3" id="table" v-model="selectedTable">
-                        <option disabled>Выберите таблицу</option>
-                        <option v-for="(table, index) in tables" :value="table.id" :key="index">
-                            {{ table.name }}
-                        </option>
+    <div class="container mx-auto mt-3 px-3">
 
-                    </select>
-                </div>
+        <breadcrumbs :elements="[{text: 'Табличные данные', url: '/tables'}]"/>
+
+        <div class="flex justify-between dark:text-white">
+            <p class="text-2xl text-gray-900 dark:text-white">Выберите таблицу для просмотра</p>
+            <button
+                type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                data-modal-toggle="addTableModal"
+                data-modal-target="addTableModal">
+                <svg class="w-5 h-5" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <path
+                        d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z"/>
+                </svg>
+            </button>
+            <Teleport to="#modal-container">
+                <AddTable @data-added="getTablesMeta"/>
+            </Teleport>
+        </div>
+
+        <div class="flex py-2">
+            <div class="w-fit">
+                <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Год</label>
+                <select id="year"
+                        v-model="selectedYear"
+                        class="rounded-l-lg bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option disabled>Год</option>
+                    <option v-for="year in years" :value="year" :key="year">
+                        {{ year }}
+                    </option>
+                </select>
+            </div>
+            <div class="grow" ref="tableBlock">
+                <label for="table" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Таблица</label>
+                <select
+                    @change="getTableData"
+                    v-model="selectedTable"
+                    id="table"
+                    class="rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm focus:ring-blue-500 focus:border-blue-500 w-full block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option disabled>Таблица</option>
+                    <option v-for="(table, index) in tables" :value="table.id" :key="index">
+                        {{ table.name }}
+                    </option>
+                </select>
             </div>
         </div>
-        <div class="row" v-if="tableData !== null">
-            <div class="col-12" id="table-block">
-                <Table :data="tableData" height="700px"/>
-            </div>
+    </div>
+    <div class="container mx-auto px-3" v-if="tableData !== null">
+        <div id="table-block">
+            <Table :data="tableData" height="700px"/>
         </div>
     </div>
 </template>

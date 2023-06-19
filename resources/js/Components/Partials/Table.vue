@@ -43,7 +43,7 @@ export default {
 </script>
 
 <template>
-    <div id="table-container">
+    <div id="table-container" class="rounded-lg ">
         <div ref="table"></div>
     </div>
 </template>

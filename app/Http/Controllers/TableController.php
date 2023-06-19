@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Tables;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;

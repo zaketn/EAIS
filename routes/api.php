@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\Tables\TableController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
 
 /*

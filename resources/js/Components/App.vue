@@ -1,8 +1,10 @@
 <script setup>
 import Navbar from "./Partials/Navbar.vue";
 import {onBeforeMount} from "vue";
+import {initFlowbite} from "flowbite";
 
 onBeforeMount(() => {
+    initFlowbite()
     themeInit()
 })
 

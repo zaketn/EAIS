@@ -7,14 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ЕАИС</title>
 
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/css/Plugins/flowbite.min.css'])
 </head>
 <body class="dark:bg-gray-900">
 
 <div id="app"></div>
 
-@vite(['resources/js/app.js',])
-
+@vite(['resources/js/app.js', 'resources/js/Plugins/flowbite.min.js'])
 </body>
 </html>
 
