@@ -8,7 +8,9 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
+                'resources/css/Plugins/flowbite.min.css',
                 'resources/js/app.js',
+                'resources/js/Plugins/flowbite.min.js'
             ],
             refresh: true,
         }),
