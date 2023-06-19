@@ -2,7 +2,9 @@
 
 import {computed, onBeforeMount, ref} from 'vue';
 import axios from 'axios';
-import Line from './Partials/LineChart.vue'
+import Line from '../Partials/LineChart.vue'
+import AddTable from "../Modals/ImportTable.vue";
+import Breadcrumbs from "../Partials/Breadcrumbs.vue";
 
 const tablesMeta = ref({})
 const selectedYear = ref(null)
@@ -110,30 +112,30 @@ const getTablesMeta = () => axios
 </script>
 
 <template>
-    <div class="container">
-        <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                Выберите статистику для просмотра
-            </div>
-            <div class="row px-3 py-2">
-                <div class="col-12">
-                    <label for="year" class="form-label">Год</label>
-                    <select v-model="selectedYear"
-                            class="form-select mb-3" id="year">
-                        <option disabled>Год</option>
-                        <option v-for="year in years" :value="year" :key="year">
-                            {{ year }}
-                        </option>
-                    </select>
-                </div>
+    <div class="container mx-auto mt-3 px-3">
+
+        <breadcrumbs :elements="[{text: 'Статистические данные', url: '/statistics'}]"/>
+
+        <div class="flex justify-between dark:text-white">
+            <p class="text-2xl text-gray-900 dark:text-white">Выберите статистику для просмотра</p>
+        </div>
+        <div class="flex py-2">
+            <div class="w-full">
+                <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Год</label>
+                <select id="year"
+                        v-model="selectedYear"
+                        class="rounded-lg bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option disabled>Год</option>
+                    <option v-for="year in years" :value="year" :key="year">
+                        {{ year }}
+                    </option>
+                </select>
             </div>
         </div>
-        <div class="row" v-if="selectedStats !== undefined">
-            <div class="col-12" id="table-block">
-                <div id="test"></div>
-                <Line id="test" :data="selectedStats"/>
-            </div>
-        </div>
+    </div>
+
+    <div class="container mx-auto px-3" v-if="selectedStats !== undefined">
+        <Line :data="selectedStats"/>
     </div>
 </template>
 

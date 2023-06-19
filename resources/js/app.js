@@ -1,24 +1,9 @@
 import './bootstrap';
-import {createApp} from "vue";
+import { createApp } from "vue";
+import { router } from './router'
+import App from './Components/App.vue'
 
-import Navbar from "./Components/Navbar.vue";
-import Tables from "./Components/TablesData.vue";
-import Statistics from "./Components/Statistics.vue";
-
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
-Alpine.start();
-
-const app = createApp({
-    components: {
-        Navbar,
-        Tables,
-        Statistics
-    }
-})
+const app = createApp(App)
+app.use(router)
 
 app.mount('#app');
-app.mount('#tables');
-app.mount('#stats');
