@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,9 +13,9 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(): Collection
     {
-        return Auth::user();
+        return User::all();
     }
 
     public function create()
@@ -45,5 +46,26 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function current(): ?Authenticatable
+    {
+        return Auth::user();
+    }
+
+    public function updateRole(Request $request): Model
+    {
+        $user = User::query()->find($request->userId);
+        $role = Role::query()->find($request->roleId);
+
+        if($user->exists() && $role->exists()){
+            $user->update([
+                'role_id' => $role->id
+            ]);
+        } else{
+            abort(404);
+        }
+
+        return $user;
     }
 }

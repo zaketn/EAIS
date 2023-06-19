@@ -79,6 +79,7 @@ const data = {
                 data: [90041 / 134, 82374 / 132, 3931 / 134],
                 borderColor: '#36A2EB',
                 backgroundColor: '#9BD0F5',
+                color: '#fff'
             },
             {
                 label: 'Сальдированный финансовый результат / Средняя численность работников',
@@ -86,7 +87,7 @@ const data = {
                 borderColor: '#FF6384',
                 backgroundColor: '#FFB1C1',
             },
-        ]
+        ],
     }
 }
 
@@ -134,7 +135,7 @@ const getTablesMeta = () => axios
         </div>
     </div>
 
-    <div class="container mx-auto px-3" v-if="selectedStats !== undefined">
+    <div class="container mx-auto px-3 text-white" v-if="selectedStats !== undefined">
         <Line :data="selectedStats"/>
     </div>
 </template>

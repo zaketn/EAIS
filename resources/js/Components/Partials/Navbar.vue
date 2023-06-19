@@ -1,7 +1,12 @@
 <script setup>
 import axios from "axios";
-import {computed, onBeforeMount, ref} from "vue";
-import {useRouter, useRoute} from "vue-router";
+import {computed, ref} from "vue";
+import {useRoute} from "vue-router";
+import {metaInfo} from "../../Stores/UserStore.js";
+
+const meta = metaInfo()
+const user = JSON.parse(meta.user)
+const role = meta.role ? JSON.parse(meta.role) : undefined
 
 const routes = {
     home: '/',
@@ -19,25 +24,22 @@ const linksClasses = {
     active: 'block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent',
     default: 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
 }
-const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+const csrf = meta.csrf
 const tablesLink = ref()
 const statsLink = ref()
 const dropdownProfile = ref()
 const burgerMenu = ref()
 
-let currentUser = ref({});
-
-onBeforeMount(() => {
-    getCurrentUser()
-})
 
 const isIncludedInUrl = (search) => {
     return window.location.pathname.includes(search)
 }
 
+console.log(role)
+
 const getCurrentUser = () => {
-    axios.get('/users')
-        .then((response) => currentUser.value = response.data)
+    axios.get('/users/current')
+        .then((response) => user.value = response.data)
         .catch((error) => console.log(error))
 }
 
@@ -79,14 +81,21 @@ const switchTheme = () => {
                      id="burger-dropdown"
                      ref="burgerMenu">
                     <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
-                        <li>
+                        <li v-if="role && role.name === 'Админ'">
+                            <router-link to="/users"
+                                         :class="[currentRouteName === 'users' ? linksClasses.active : linksClasses.default]"
+                                         ref="tablesLink">
+                                Пользователи
+                            </router-link>
+                        </li>
+                        <li v-if="role && role.name === 'Админ'">
                             <router-link to="/tables"
                                          :class="[currentRouteName === 'tables' ? linksClasses.active : linksClasses.default]"
                                          ref="tablesLink">
                                 Таблицы
                             </router-link>
                         </li>
-                        <li>
+                        <li v-if="role && (role.name === 'Админ' || role.name === 'Менеджер')">
                             <router-link :to="routes.statistics"
                                          :class="[currentRouteName === 'statistics' ? linksClasses.active : linksClasses.default]"
                                          ref="statsLink">Статистика
@@ -97,7 +106,7 @@ const switchTheme = () => {
                                     @click="toggleProfileDropdown"
                                     class="flex items-center"
                                     :class="linksClasses.default">
-                                {{ currentUser.name }}
+                                {{ user.name }}
                                 <svg class="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"

@@ -1,8 +1,8 @@
+import {createRouter, createWebHistory} from "vue-router";
+import Home from "./Components/Views/Home.vue";
+import Users from "./Components/Views/Users.vue";
 import Tables from "./Components/Views/Tables.vue";
 import Statistics from "./Components/Views/Statistics.vue";
-import {createRouter, createWebHistory} from "vue-router";
-import App from "./Components/App.vue";
-import Home from "./Components/Views/Home.vue";
 
 const routes = [
     {
@@ -20,6 +20,11 @@ const routes = [
         component: Statistics,
         name: 'statistics'
     },
+    {
+        path: '/users',
+        component: Users,
+        name: 'users'
+    }
 ]
 
 export const router = createRouter({
