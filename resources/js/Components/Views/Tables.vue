@@ -38,7 +38,6 @@ onMounted(() => {
 const getTableData = () => axios
     .get(`/api/tables/${selectedTable.value}`)
     .then((response) => tableData.value = JSON.parse(response.data.data))
-    .finally(() => console.log(tableData.value))
     .catch((response) => console.log(response.data))
 
 const getTablesMeta = () => axios
