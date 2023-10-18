@@ -24,6 +24,7 @@ const themeInit = () => {
     <Navbar/>
 
     <router-view></router-view>
+
     <div id="modal-container"></div>
 </template>
 
