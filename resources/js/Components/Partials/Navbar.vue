@@ -2,18 +2,11 @@
 import axios from "axios";
 import {computed, ref} from "vue";
 import {useRoute} from "vue-router";
-import {metaInfo} from "../../Stores/UserStore.js";
+import {metaInfo} from "@/Stores/UserStore";
 
 const meta = metaInfo()
 const user = JSON.parse(meta.user)
 const role = meta.role ? JSON.parse(meta.role) : undefined
-
-const routes = {
-    home: '/',
-    tables: '/tables',
-    statistics: '/statistics',
-    logout: '/logout'
-}
 
 const currentRouteName = computed({
     get: () => useRoute().name,
@@ -34,8 +27,6 @@ const burgerMenu = ref()
 const isIncludedInUrl = (search) => {
     return window.location.pathname.includes(search)
 }
-
-console.log(role)
 
 const getCurrentUser = () => {
     axios.get('/users/current')
@@ -62,7 +53,7 @@ const switchTheme = () => {
         <nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 mb-8">
             <div
                 class="flex flex-wrap items-center justify-between p-4 rounded border-gray-700 bg-gray-100 dark:bg-gray-800">
-                <router-link :to="routes.home" class="flex items-center">
+                <router-link :to="{ name: 'home' }" class="flex items-center">
                     <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">ЕАИС</span>
                 </router-link>
                 <button data-collapse-toggle="burger-dropdown" type="button"
@@ -82,23 +73,29 @@ const switchTheme = () => {
                      ref="burgerMenu">
                     <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
                         <li v-if="role && role.name === 'Админ'">
-                            <router-link to="/users"
+                            <router-link :to="{ name: 'users' }"
                                          :class="[currentRouteName === 'users' ? linksClasses.active : linksClasses.default]"
                                          ref="tablesLink">
                                 Пользователи
                             </router-link>
                         </li>
                         <li v-if="role && role.name === 'Админ'">
-                            <router-link to="/tables"
+                            <router-link :to="{ name: 'tables' }"
                                          :class="[currentRouteName === 'tables' ? linksClasses.active : linksClasses.default]"
                                          ref="tablesLink">
                                 Таблицы
                             </router-link>
                         </li>
                         <li v-if="role && (role.name === 'Админ' || role.name === 'Менеджер')">
-                            <router-link :to="routes.statistics"
+                            <router-link :to="{ name: 'statistics' }"
                                          :class="[currentRouteName === 'statistics' ? linksClasses.active : linksClasses.default]"
                                          ref="statsLink">Статистика
+                            </router-link>
+                        </li>
+                        <li v-if="role && (role.name === 'Админ' || role.name === 'Менеджер')">
+                            <router-link :to="{ name: 'incomeCalculator' }"
+                                         :class="[currentRouteName === 'income-calculator' ? linksClasses.active : linksClasses.default]"
+                                         ref="statsLink">Калькулятор
                             </router-link>
                         </li>
                         <li>
@@ -120,9 +117,15 @@ const switchTheme = () => {
                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-400"
                                     aria-labelledby="dropdownLargeButton">
                                     <li>
-                                        <router-link :to="routes.home"
+                                        <router-link :to="{ name: 'home' }"
                                                      class="text-center block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
                                             Профиль
+                                        </router-link>
+                                    </li>
+                                    <li>
+                                        <router-link :to="{ name: 'settings.incomeCalculator' }"
+                                                     class="text-center block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
+                                            Настройки калькулятора
                                         </router-link>
                                     </li>
                                     <li>
@@ -133,7 +136,7 @@ const switchTheme = () => {
                                         </button>
                                     </li>
                                     <li>
-                                        <form :action="routes.logout" method="post" class="m-0 p-0">
+                                        <form :action="{ name: 'logout' }" method="post" class="m-0 p-0">
                                             <input type="hidden" name="_token" :value="csrf">
                                             <button type="submit"
                                                     class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black font-bold">

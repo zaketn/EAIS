@@ -1,19 +1,50 @@
 <script setup>
 import Input from "@/Components/Partials/Input.vue";
+import {onBeforeMount, ref} from "vue";
+import Button from "@/Components/Partials/Button.vue";
+
+const settings = ref()
+
+onBeforeMount(() => {
+    getSettings()
+})
+
+const getSettings = () => {
+    axios.get('/api/calculator-parameters')
+        .then((response) => settings.value = response.data)
+        .catch((error) => console.log(error))
+}
+
+const saveSettings = () => {
+    const inputs = document.querySelectorAll('input')
+    for(let input of inputs){
+        const name = input.getAttribute('name')
+        const value = input.value
+        if(name === '_token') continue;
+
+        axios.patch('/api/calculator-parameters/' + name, {
+            value: value
+        })
+            .then((response) => console.log(response.data))
+    }
+
+    console.log(inputs)
+}
+
 </script>
 
 <template>
-    <div class="container mx-auto mt-3 px-3">
+    <form class="container mx-auto mt-3 px-3">
         <h1 class="text-4xl font-bold mb-5">Настройки переменных для калькулятора</h1>
+        <Button @click.prevent="saveSettings" text="Сохранить"/>
         <div>
-            <Input id="living_wage" label="Прожиточный минимум" />
-            <Input id="essential_items_share" label="Доля предметов первой необходимости в структуре потребительских расходов домашнего хозяйства" />
-            <Input id="durable_goods_share" label="Доля предметов длительного пользования в структуре потребительских расходов домашнего хозяйства" />
-            <Input id="luxury_goods_share" label="Доля предметов роскоши в структуре потребительских расходов домашнего хозяйства" />
-            <Input id="luxury_lower_limit" label="Нижняя граница среднедушевого денежного дохода домашнего хозяйства в месяц, позволяющего приобретать предметы роскоши" />
-            <Input id="income_tax_rate" label="Ставка налога на доходы физических лиц" />
+            <Input v-for="setting in settings"
+                   :id="setting.slug"
+                   :name="setting.slug"
+                   :label="setting.name"
+                   :value="setting.value"/>
         </div>
-    </div>
+    </form>
 </template>
 
 <style scoped>

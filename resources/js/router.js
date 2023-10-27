@@ -30,12 +30,12 @@ const routes = [
     {
         path: '/income-calculator',
         component: IncomeCalculator,
-        name: 'income-calculator'
+        name: 'incomeCalculator'
     },
     {
         path: '/settings/income-calculator',
         component: IncomeCalculatorSettings,
-        name: 'settings.income-calculator'
+        name: 'settings.incomeCalculator'
     }
 ]
 
