@@ -21,7 +21,9 @@ const themeInit = () => {
 </script>
 
 <template>
-    <Navbar/>
+    <Suspense>
+        <Navbar/>
+    </Suspense>
 
     <router-view></router-view>
 

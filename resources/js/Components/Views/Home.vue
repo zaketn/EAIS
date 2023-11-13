@@ -1,8 +1,11 @@
 <script setup>
-import {metaInfo} from "@/Stores/UserStore";
+import {useAuthStore} from "@/Stores/AuthStore";
+import {useUserStore} from "@/Stores/UserStore";
 
-const meta = metaInfo()
-const role = meta.role ? JSON.parse(meta.role) : undefined
+const auth = useAuthStore()
+const user = useUserStore()
+
+const role = auth.role ? JSON.parse(auth.role) : undefined
 </script>
 
 <template>

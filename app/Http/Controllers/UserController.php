@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
 {
-    public function index(): Collection
+    public function index(): AnonymousResourceCollection
     {
-        return User::all();
+        return UserResource::collection(User::all());
     }
 
     public function create()
@@ -48,23 +46,23 @@ class UserController extends Controller
         //
     }
 
-    public function current(): ?Authenticatable
+    public function current(): ?UserResource
     {
-        return Auth::user();
+        if (auth('sanctum')->check()) {
+            return new UserResource(auth('sanctum')->user());
+        }
+
+        return null;
     }
 
     public function updateRole(Request $request): Model
     {
-        $user = User::query()->find($request->userId);
-        $role = Role::query()->find($request->roleId);
+        $user = User::query()->findOrFail($request->userId);
+        $role = Role::query()->findOrFail($request->roleId);
 
-        if($user->exists() && $role->exists()){
-            $user->update([
-                'role_id' => $role->id
-            ]);
-        } else{
-            abort(404);
-        }
+        $user->update([
+            'role_id' => $role->id
+        ]);
 
         return $user;
     }

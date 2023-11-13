@@ -1,16 +1,20 @@
 import {defineStore} from "pinia";
-import {ref} from "vue";
 
-export const metaInfo = defineStore('userStore', () => {
-    const user = ref(document
-        .querySelector('meta[name="currentUser"]')
-        .getAttribute('content')
-    )
-    const role = ref(document
-        .querySelector('meta[name="role"]')
-        .getAttribute('content')
-    )
-    const csrf = ref(document.querySelector('meta[name="csrf-token"]').getAttribute('content'))
+export const useUserStore = defineStore('userStore', () => {
+    async function getUser() {
+        let user
 
-    return {user, role, csrf}
+        await axios.get('/sanctum/csrf-cookie')
+            .then(async () => {
+                await axios.get('/api/user')
+                    .then((response) => {
+                        user = response.data
+                    })
+                    .catch(() => null)
+            })
+
+        return user
+    }
+
+    return {getUser}
 })

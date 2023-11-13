@@ -1,12 +1,14 @@
 <script setup>
-import axios from "axios";
 import {computed, ref} from "vue";
 import {useRoute} from "vue-router";
-import {metaInfo} from "@/Stores/UserStore";
+import {useUserStore} from "@/Stores/UserStore";
+import Button from "@/Components/Partials/Button.vue";
 
-const meta = metaInfo()
-const user = JSON.parse(meta.user)
-const role = meta.role ? JSON.parse(meta.role) : undefined
+// TODO: Сделать обновление пользователя при входе/выходе из аккаунта
+// TODO: Починить работу выпадающих списков
+
+const userStore = useUserStore()
+const user = ref(await userStore.getUser())
 
 const currentRouteName = computed({
     get: () => useRoute().name,
@@ -17,22 +19,11 @@ const linksClasses = {
     active: 'block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent',
     default: 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
 }
-const csrf = meta.csrf
+
 const tablesLink = ref()
 const statsLink = ref()
 const dropdownProfile = ref()
 const burgerMenu = ref()
-
-
-const isIncludedInUrl = (search) => {
-    return window.location.pathname.includes(search)
-}
-
-const getCurrentUser = () => {
-    axios.get('/users/current')
-        .then((response) => user.value = response.data)
-        .catch((error) => console.log(error))
-}
 
 const switchTheme = () => {
     const currentTheme = localStorage.getItem('theme');
@@ -71,28 +62,29 @@ const switchTheme = () => {
                 <div class="hidden w-full md:block md:w-auto"
                      id="burger-dropdown"
                      ref="burgerMenu">
-                    <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
-                        <li v-if="role && role.name === 'Админ'">
+                    <ul v-if="user"
+                        class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
+                        <li v-if="user.data.role && user.data.role.name === 'Админ'">
                             <router-link :to="{ name: 'users' }"
                                          :class="[currentRouteName === 'users' ? linksClasses.active : linksClasses.default]"
                                          ref="tablesLink">
                                 Пользователи
                             </router-link>
                         </li>
-                        <li v-if="role && role.name === 'Админ'">
+                        <li v-if="user.data.role && user.data.role.name === 'Админ'">
                             <router-link :to="{ name: 'tables' }"
                                          :class="[currentRouteName === 'tables' ? linksClasses.active : linksClasses.default]"
                                          ref="tablesLink">
                                 Таблицы
                             </router-link>
                         </li>
-                        <li v-if="role && (role.name === 'Админ' || role.name === 'Менеджер')">
+                        <li v-if="user.data.role && (user.data.role.name === 'Админ' || user.data.role.name === 'Менеджер')">
                             <router-link :to="{ name: 'statistics' }"
                                          :class="[currentRouteName === 'statistics' ? linksClasses.active : linksClasses.default]"
                                          ref="statsLink">Статистика
                             </router-link>
                         </li>
-                        <li v-if="role && (role.name === 'Админ' || role.name === 'Менеджер')">
+                        <li v-if="user.data.role && (user.data.role.name === 'Админ' || user.data.role.name === 'Менеджер')">
                             <router-link :to="{ name: 'incomeCalculator' }"
                                          :class="[currentRouteName === 'income-calculator' ? linksClasses.active : linksClasses.default]"
                                          ref="statsLink">Калькулятор
@@ -103,7 +95,7 @@ const switchTheme = () => {
                                     @click="toggleProfileDropdown"
                                     class="flex items-center"
                                     :class="linksClasses.default">
-                                {{ user.name }}
+                                {{ user.data.name }}
                                 <svg class="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -137,7 +129,6 @@ const switchTheme = () => {
                                     </li>
                                     <li>
                                         <form :action="{ name: 'logout' }" method="post" class="m-0 p-0">
-                                            <input type="hidden" name="_token" :value="csrf">
                                             <button type="submit"
                                                     class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black font-bold">
                                                 Выйти
@@ -146,6 +137,15 @@ const switchTheme = () => {
                                     </li>
                                 </ul>
                             </div>
+                        </li>
+                    </ul>
+                    <ul v-else
+                        class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
+                        <li>
+                            <router-link :to="{ name: 'login' }"
+                                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                Войти
+                            </router-link>
                         </li>
                     </ul>
                 </div>
