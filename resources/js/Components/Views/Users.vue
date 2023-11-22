@@ -1,23 +1,26 @@
 <script setup>
 import Breadcrumbs from "../Partials/Breadcrumbs.vue";
+import Navbar from "@/Components/Partials/Navbar.vue";
 import {onBeforeMount, ref} from "vue";
 
 const roles = ref()
 const users = ref()
 
-onBeforeMount(() => {
-    getUsers()
-    getRoles()
+onBeforeMount(async () => {
+    await getUsers()
+    await getRoles()
+
+    console.log(users.value)
 })
-const getUsers = () => {
-    axios.get('/api/users')
-        .then((response) => users.value = response.data)
+const getUsers = async () => {
+    return await axios.get('/api/users')
+        .then((response) => users.value = response.data.data ?? response.data)
         .catch((error) => console.log(error))
 }
 
-const getRoles = () => {
-    axios.get('api/roles')
-        .then((response) => roles.value = response.data)
+const getRoles = async () => {
+    return await axios.get('api/roles')
+        .then((response) => roles.value = response.data.data ?? response.data)
         .catch((error) => console.log(error))
 }
 
@@ -34,6 +37,10 @@ const updateRole = (event) => {
 </script>
 
 <template>
+    <Suspense>
+        <Navbar />
+    </Suspense>
+
     <div class="container mx-auto p-3">
         <breadcrumbs :elements="[{text: 'Пользователи', url: '/users'}]"/>
 
@@ -70,7 +77,7 @@ const updateRole = (event) => {
                             <option :selected="user.role === null || user.role === undefined" disabled>Права не назначены
                             </option>
                             <option
-                                :selected="user.role_id === role.id"
+                                :selected="user.role ? user.role.id === role.id : false"
                                 v-for="role in roles"
                                 :value="role.id">
                                 {{ role.name }}

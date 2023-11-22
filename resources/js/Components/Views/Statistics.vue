@@ -3,7 +3,7 @@
 import {computed, onBeforeMount, ref} from 'vue';
 import axios from 'axios';
 import Line from '../Partials/LineChart.vue'
-import AddTable from "../Modals/ImportTable.vue";
+import Navbar from "@/Components/Partials/Navbar.vue";
 import Breadcrumbs from "../Partials/Breadcrumbs.vue";
 
 const tablesMeta = ref({})
@@ -113,6 +113,10 @@ const getTablesMeta = () => axios
 </script>
 
 <template>
+    <Suspense>
+        <Navbar />
+    </Suspense>
+
     <div class="container mx-auto mt-3 px-3">
 
         <breadcrumbs :elements="[{text: 'Статистические данные', url: '/statistics'}]"/>

@@ -2,6 +2,8 @@
 import Input from "@/Components/Partials/Input.vue";
 import {onBeforeMount, ref} from "vue";
 import Button from "@/Components/Partials/Button.vue";
+import Navbar from "@/Components/Partials/Navbar.vue";
+
 
 const settings = ref()
 
@@ -34,6 +36,10 @@ const saveSettings = () => {
 </script>
 
 <template>
+    <Suspense>
+        <Navbar />
+    </Suspense>
+
     <form class="container mx-auto mt-3 px-3">
         <h1 class="text-4xl font-bold mb-5">Настройки переменных для калькулятора</h1>
         <Button @click.prevent="saveSettings" text="Сохранить"/>

@@ -1,12 +1,29 @@
 <script setup>
-    const props = defineProps(['id', 'name', 'label', 'modelValue', 'type', 'popoverText'])
+import {computed} from "vue";
+
+    const props = defineProps(['id', 'name', 'label', 'modelValue', 'type', 'display', 'popoverText'])
     defineEmits(['update:modelValue'])
+
+    const display = {
+        default: {
+            label: 'text-gray-900 dark:text-white',
+            input: 'bg-gray-50 border-gray-300 text-gray-900 mb-3 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+        },
+        error: {
+            label: 'text-red-700 dark:text-red-500',
+            input: 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500'
+        }
+    }
+
+    const labelStyle = computed(() => props.display === 'error' ? display.error.label : display.default.label)
+    const inputStyle = computed(() => props.display === 'error' ? display.error.input : display.default.input)
 </script>
 
 <template>
     <div>
         <label for="first_name"
-               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+               class="block mb-2 text-sm font-medium"
+               :class="labelStyle" >
             {{ props.label }}
 
             <button v-if="props.popoverText !== undefined"
@@ -33,7 +50,8 @@
                :name="props.name"
                :value="modelValue"
                @input="$emit('update:modelValue', $event.target.value)"
-               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg mb-3 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+               class="block w-full p-2.5 border text-sm rounded-lg"
+               :class="inputStyle"
                required>
     </div>
 </template>

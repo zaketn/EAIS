@@ -1,6 +1,8 @@
 <script setup>
 import Line from '../Partials/LineChart.vue'
 import Input from "@/Components/Partials/Input.vue";
+import Navbar from "@/Components/Partials/Navbar.vue";
+
 
 const chartData = {
     labels: ['', '', ''],
@@ -23,6 +25,10 @@ const chartData = {
 </script>
 
 <template>
+    <Suspense>
+        <Navbar />
+    </Suspense>
+
     <div class="container mx-auto mt-3 px-3">
             <div class="container mb-5">
                 <Line :data="chartData"/>

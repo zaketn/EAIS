@@ -25,7 +25,7 @@ const routes = [
         path: '/',
         component: Home,
         meta: {
-            permissions: permissions.any
+            permissions: permissions.auth
         },
         name: 'home',
     },

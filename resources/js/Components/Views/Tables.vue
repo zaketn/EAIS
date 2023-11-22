@@ -5,6 +5,7 @@ import { PlusCircleIcon } from '@heroicons/vue/24/outline';
 import { Modal } from 'flowbite';
 import Table from '../Partials/Table.vue'
 import AddTable from "../Modals/ImportTable.vue";
+import Navbar from "@/Components/Partials/Navbar.vue";
 import Breadcrumbs from "../Partials/Breadcrumbs.vue";
 
 
@@ -49,6 +50,10 @@ const getTablesMeta = () => axios
 
 
 <template>
+    <Suspense>
+        <Navbar />
+    </Suspense>
+
     <div class="container mx-auto mt-3 px-3">
 
         <breadcrumbs :elements="[{text: 'Табличные данные', url: '/tables'}]"/>

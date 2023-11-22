@@ -1,5 +1,4 @@
 <script setup>
-import Navbar from "./Partials/Navbar.vue";
 import {onBeforeMount} from "vue";
 import {initFlowbite} from "flowbite";
 
@@ -21,10 +20,6 @@ const themeInit = () => {
 </script>
 
 <template>
-    <Suspense>
-        <Navbar/>
-    </Suspense>
-
     <router-view></router-view>
 
     <div id="modal-container"></div>
