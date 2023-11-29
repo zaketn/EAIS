@@ -22,10 +22,14 @@ const user = await userStore.getUser()
               description="Просмотр статистики по табличным данным"/>
 
     <LinkCard :to="{name: 'incomeCalculator'}"
-              :isShowed="user.data.role && (user.data.role.name === 'Админ' || user.data.role.name === 'Менеджер')"
+              :isShowed="true"
               header="Калькулятор"
               description="Идентификация диапазонов благосостояния"/>
 
+    <LinkCard :to="{name: 'settings.incomeCalculator'}"
+              :isShowed="user.data.role && user.data.role.name === 'Админ'"
+              header="Настройки калькулятора"
+              description="Настройте предустановленные значения для калькулятора"/>
 </template>
 
 <style scoped>
