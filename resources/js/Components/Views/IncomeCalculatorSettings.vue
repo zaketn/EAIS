@@ -41,7 +41,7 @@ const saveSettings = () => {
     </Suspense>
 
     <form class="container mx-auto mt-3 px-3">
-        <h1 class="text-4xl font-bold mb-5">Настройки переменных для калькулятора</h1>
+        <h1 class="text-4xl font-bold mb-5 dark:text-white">Настройки переменных для калькулятора</h1>
         <Button @click.prevent="saveSettings" text="Сохранить"/>
         <div>
             <Input v-for="setting in settings"
