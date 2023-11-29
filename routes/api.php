@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Calculator\CalculatorParametersController;
+use App\Http\Controllers\CalculatorHistoryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
@@ -31,3 +32,5 @@ Route::resource('/users', UserController::class);
 
 Route::resource('/roles', RoleController::class);
 Route::resource('/calculator-parameters', CalculatorParametersController::class);
+
+Route::resource('/calculator-history', CalculatorHistoryController::class);

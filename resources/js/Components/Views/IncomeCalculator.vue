@@ -2,7 +2,7 @@
 import Line from '../Partials/LineChart.vue'
 import Input from "@/Components/Partials/Input.vue";
 import Navbar from "@/Components/Partials/Navbar.vue";
-
+import Button from "@/Components/Partials/Button.vue";
 
 const chartData = {
     labels: ['', '', ''],
@@ -57,6 +57,7 @@ const chartData = {
                         <Input id="consumer_spending_durable" label="Потребительские расходы домашнего хозяйства на приобретение предметов длительного пользования" popoverText="В рублях" />
                         <Input id="consumer_spending_luxury" label="Потребительские расходы домашнего хозяйства на приобретение предметов роскоши" popoverText="В рублях" />
                     </fieldset>
+                    <Button @click.prevent="calculate" text="Рассчитать"/>
                 </form>
             </div>
         </div>

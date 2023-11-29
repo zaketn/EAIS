@@ -1,9 +1,8 @@
 <script setup>
 import {onBeforeMount} from "vue";
-import {initFlowbite} from "flowbite";
 
 onBeforeMount(() => {
-    initFlowbite()
+
     themeInit()
 })
 

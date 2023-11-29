@@ -40,4 +40,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(CalculatorParameters::class);
     }
+
+    public function history(): HasMany
+    {
+        return $this->hasMany(History::class);
+    }
 }
