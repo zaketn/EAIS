@@ -96,15 +96,11 @@ export const router = createRouter({
 router.beforeEach(async (to, from) => {
     const auth = useAuthStore()
     const isAuthenticated = await auth.checkAuth()
-    console.log(isAuthenticated)
 
     if(to.meta.permissions.auth !== ''){
-        console.log('permissions is not null')
         if (!isAuthenticated && to.meta.permissions.auth === true) {
-            console.log('not auth with auth route')
             return {name: 'login'}
         } else if (isAuthenticated && to.meta.permissions.auth === false) {
-            console.info('auth with non auth route')
             return from.path
         }
     }
