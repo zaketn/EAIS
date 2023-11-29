@@ -25,8 +25,10 @@ export const useAuthStore = defineStore('authStore', () => {
     function logout() {
         return axios.get('/sanctum/csrf-cookie').then(() => {
             axios.post('/logout')
-                .then((response) => {
-                    console.log(response.data)
+                .then(async (response) => {
+                    if (response.status === 204) {
+                        window.location.replace("/login");
+                    }
                 })
                 .catch((error) => console.log(error))
         })

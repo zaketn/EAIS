@@ -1,9 +1,10 @@
 <script setup>
 import {computed, ref, onMounted} from "vue";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {useUserStore} from "@/Stores/UserStore";
 import Button from "@/Components/Partials/Button.vue";
 import {initFlowbite} from 'flowbite'
+import {useAuthStore} from "@/Stores/AuthStore";
 
 onMounted(() => {
     initFlowbite();
@@ -14,6 +15,7 @@ onMounted(() => {
 
 const userStore = useUserStore()
 const user = ref(await userStore.getUser())
+const authStore = useAuthStore()
 
 const currentRouteName = computed({
     get: () => useRoute().name,
@@ -29,6 +31,7 @@ const tablesLink = ref()
 const statsLink = ref()
 const dropdownProfile = ref()
 const burgerMenu = ref()
+const router = useRouter()
 
 const switchTheme = () => {
     const currentTheme = localStorage.getItem('theme');
@@ -41,6 +44,10 @@ const switchTheme = () => {
             break
     }
     document.documentElement.classList.toggle('dark')
+}
+
+const logout = async () => {
+
 }
 </script>
 
@@ -140,12 +147,13 @@ const switchTheme = () => {
                                         </button>
                                     </li>
                                     <li>
-                                        <form :action="{ name: 'logout' }" method="post" class="m-0 p-0">
-                                            <button type="submit"
+                                        <div class="m-0 p-0">
+                                            <button @click="authStore.logout"
+                                                    type="submit"
                                                     class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black font-bold">
                                                 Выйти
                                             </button>
-                                        </form>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
