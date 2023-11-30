@@ -1,13 +1,13 @@
 <script setup>
 import Input from "@/Components/Partials/Input.vue";
-import {onBeforeMount, ref} from "vue";
+import {onMounted, ref} from "vue";
 import Button from "@/Components/Partials/Button.vue";
 import Navbar from "@/Components/Partials/Navbar.vue";
 
 
 const settings = ref()
 
-onBeforeMount(() => {
+onMounted(() => {
     getSettings()
 })
 
@@ -24,10 +24,9 @@ const saveSettings = () => {
         const value = input.value
         if(name === '_token') continue;
 
-        axios.patch('/api/calculator-parameters/' + name, {
-            value: value
-        })
-            .then((response) => console.log(response.data))
+        axios.patch('/api/calculator-parameters/' + name, { value })
+            .then(response => console.log(response.data))
+            .catch(error => console.error(error))
     }
 
     console.log(inputs)
@@ -45,10 +44,11 @@ const saveSettings = () => {
         <Button @click.prevent="saveSettings" text="Сохранить"/>
         <div>
             <Input v-for="setting in settings"
-                   :id="setting.slug"
+                   :id="setting.id"
                    :name="setting.slug"
                    :label="setting.name"
-                   :value="setting.value"/>
+                   :modelValue="setting.value"
+            />
         </div>
     </form>
 </template>
