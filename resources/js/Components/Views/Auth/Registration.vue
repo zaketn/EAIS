@@ -1,26 +1,29 @@
 <script setup>
-import {useAuthStore} from "@/Stores/AuthStore";
+import { useAuthStore } from "@/Stores/AuthStore";
 import Button from "@/Components/Partials/Button.vue";
 import Input from "@/Components/Partials/Input.vue";
 import Navbar from "@/Components/Partials/Navbar.vue";
-import {ref} from "vue";
-import {useRouter} from 'vue-router'
+import { ref } from "vue";
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const auth = useAuthStore()
 
 const email = ref()
 const password = ref()
+const password_confirmation = ref()
+const name = ref()
 
 const hasErrors = ref(false)
 
-const authUser = async () => {
-    const authStatus = await auth.login(email.value, password.value)
+const registerUser = async () => {
+    const registerStatus = await auth.register(email.value, password.value, name.value, password_confirmation.value)
 
-    if(authStatus === 204){
+    if(registerStatus === 201){
+        // редирект на страницу входа после успешной регистрации
         await router.push({name: 'home'})
     } else {
-        const inputs = document.querySelectorAll('#email, #password')
+        const inputs = document.querySelectorAll('#email, #password, #password_confirmation, #name')
         for(let input of inputs){
             hasErrors.value = true
         }
@@ -41,33 +44,19 @@ const authUser = async () => {
                     class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                         <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                            Войдите в свой аккаунт
+                            Регистрация
                         </h1>
                         <form class="space-y-4 md:space-y-6" action="#">
+                            <Input id="name" type="text" name="name" label="Имя" v-model="name" :display="hasErrors ? 'error' : 'default'"/>
                             <Input id="email" type="email" name="login" label="Электронная почта" v-model="email" :display="hasErrors ? 'error' : 'default'"/>
                             <Input id="password" type="password" name="password" label="Пароль" v-model="password" :display="hasErrors ? 'error' : 'default'"/>
+                            <Input id="password_confirmation" type="password" name="password_confirmation" label="Подтвердите пароль" v-model="password_confirmation" :display="hasErrors ? 'error' : 'default'"/>
                             <p v-if="hasErrors" class="block mb-2 text-sm font-medium text-red-700 dark:text-red-500">
                                 Вы ввели некорректные данные. Попробуйте ещё раз.
                             </p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-start">
-                                    <div class="flex items-center h-5">
-                                        <input id="remember" aria-describedby="remember" type="checkbox"
-                                               class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                                               required="">
-                                    </div>
-                                    <div class="ml-3 text-sm">
-                                        <label for="remember" class="text-gray-500 dark:text-gray-300">Запомнить
-                                            меня</label>
-                                    </div>
-                                </div>
-                                <a href="#"
-                                   class="text-sm font-medium text-primary-600 hover:underline dark:text-gray-500">Забыли пароль?</a>
-                            </div>
-                            <Button @click.prevent="authUser" text="Войти"/>
+                            <Button @click.prevent="registerUser" text="Зарегистрироваться"/>
                             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                                Нет аккаунта? <a href="/registration"
-                                                 class="font-medium text-primary-600 hover:underline dark:text-primary-500">Зарегистрироваться</a>
+                                Уже есть аккаунт? <a href="/login" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Войти</a>
                             </p>
                         </form>
                     </div>
