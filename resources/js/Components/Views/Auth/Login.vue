@@ -17,7 +17,7 @@ const hasErrors = ref(false)
 const authUser = async () => {
     const authStatus = await auth.login(email.value, password.value)
 
-    if(authStatus === 204){
+    if(authStatus >= 200 && authStatus < 300){
         await router.push({name: 'home'})
     } else {
         const inputs = document.querySelectorAll('#email, #password')

@@ -19,7 +19,7 @@ const hasErrors = ref(false)
 const registerUser = async () => {
     const registerStatus = await auth.register(email.value, password.value, name.value, password_confirmation.value)
 
-    if(registerStatus === 201){
+    if(registerStatus >= 200 && registerStatus < 300){
         // редирект на страницу входа после успешной регистрации
         await router.push({name: 'home'})
     } else {
