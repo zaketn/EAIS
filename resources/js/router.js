@@ -8,6 +8,7 @@ import IncomeCalculatorSettings from "@/Components/Views/IncomeCalculatorSetting
 import Login from "@/Components/Views/Auth/Login.vue";
 import {useAuthStore} from "@/Stores/AuthStore";
 import History from "@/Components/Views/History.vue";
+import Registration from "@/Components/Views/Auth/Registration.vue";
 
 const permissions = {
     auth: {
@@ -85,6 +86,14 @@ const routes = [
             permissions: permissions.auth
         },
         name: 'history'
+    },
+    {
+        path: '/registration',
+        component: Registration,
+        meta: {
+            permissions: permissions.guest
+        },
+        name: 'registration'
     }
 ]
 
