@@ -43,7 +43,7 @@ const getHistory = async () => {
                         {{ history.created_at }}
                     </th>
                     <td class="px-6 py-4">
-                        <button>Рассчитать</button>
+                        <router-link :to="{ name: 'historyId', params: { id: history.id }}">Перейти</router-link>
                     </td>
                 </tr>
                 </tbody>

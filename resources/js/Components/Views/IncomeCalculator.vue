@@ -3,8 +3,13 @@ import Line from '../Partials/LineChart.vue'
 import Input from "@/Components/Partials/Input.vue";
 import Navbar from "@/Components/Partials/Navbar.vue";
 import Button from "@/Components/Partials/Button.vue";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
+
+const route = useRoute()
+
+const isHistoryPage = ref(false)
+const historyDate = ref()
 
 const chartDataDemand = ref()
 const chartDataIncome = ref()
@@ -47,38 +52,38 @@ const luxuryGoodsShare = ref()
 const consumerSpendingEssentials = ref()
 const consumerSpendingDurable = ref()
 const consumerSpendingLuxury = ref()
-const history = ref()
+const history = ref({})
 
+onMounted(async () => {
+    if (route.path.includes('history')) {
+        await getHistory()
+        isHistoryPage.value = true
 
-const route = useRoute()
+        consumerIncome.value = history.value.consumerIncome
+        householdAverage.value = history.value.householdAverage
+        householdGrowth.value = history.value.householdGrowth
+        variableHouseholdIncome.value = history.value.variableHouseholdIncome
+        amountOfSavings.value = history.value.amountOfSavings
+        disposableResources.value = history.value.disposableResources
+        lumpSumTaxes.value = history.value.lumpSumTaxes
+        essentialItemsShare.value = history.value.essentialItemsShare
+        durableGoodsShare.value = history.value.durableGoodsShare
+        luxuryGoodsShare.value = history.value.luxuryGoodsShare
+        consumerSpendingEssentials.value = history.value.consumerSpendingEssentials
+        consumerSpendingDurable.value = history.value.consumerSpendingDurable
+        consumerSpendingLuxury.value = history.value.consumerSpendingLuxury
+
+        await calculate()
+    }
+})
 
 const getHistory = async () => {
     await axios.get('/api/history/' + route.params.id)
         .then((response) => {
-            console.log(response.data)
-            //console.log(JSON.parse(response.data.variables))
-            //history.value.variables = JSON.parse(response.data.variables)
+            historyDate.value = response.data.data.created_at
+            history.value = JSON.parse(response.data.data.variables)
         })
 }
-
-
-
-
-/*if (route.path.includes('history')) {
-    consumerIncome.value =
-    householdAverage.value =
-    householdGrowth.value =
-    variableHouseholdIncome.value =
-    amountOfSavings.value =
-    disposableResources.value =
-    lumpSumTaxes.value =
-    essentialItemsShare.value =
-    durableGoodsShare.value =
-    luxuryGoodsShare.value =
-    consumerSpendingEssentials.value =
-    consumerSpendingDurable.value =
-    consumerSpendingLuxury.value =
-}*/
 
 const getCalculatorSettings = async () => {
     await axios.get('/api/calculator-parameters')
@@ -131,7 +136,9 @@ const getCalculatedParameters = async () => {
     // Средняя склонность домашнего хозяйства к потреблению
     calculated.avgHouseholdPropensityToConsume = 1 - parseFloat(amountOfSavings.value) / parseFloat(disposableResources.value)
 
-    await saveDataToDatabase()
+    if(isHistoryPage.value !== true){
+        await saveDataToDatabase()
+    }
 }
 
 const calculateEssentials = (purchasingPower) => {
@@ -267,8 +274,6 @@ const saveDataToDatabase = async () => {
     }
 };
 
-console.log(route.params.id);
-
 </script>
 
 <template>
@@ -277,12 +282,13 @@ console.log(route.params.id);
     </Suspense>
 
     <div class="container mx-auto mt-3 px-3">
+        <h1 v-if="isHistoryPage" class="text-4xl mb-4 font-extrabold dark:text-white">История: {{ historyDate }}</h1>
         <div class="container mb-5">
             <Line :chartData="chartData" v-if="chartDataDemand && chartDataIncome"/>
         </div>
         <div class="container">
             <form>
-                <Button @click.prevent="calculate" text="Рассчитать"/>
+                <Button @click.prevent="calculate" v-if="!isHistoryPage" text="Рассчитать"/>
 
                 <fieldset class="border-2 border-solid rounded p-5 mb-5">
                     <legend class="text-gray-900 font-medium dark:text-white">Обязательные параметры.</legend>

@@ -13,7 +13,7 @@ class CalculatorHistoryResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => UserResource::make($this->user),
-            'variables' => $this->variables,
+            'variables' => json_decode($this->variables),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];
@@ -22,7 +22,7 @@ class CalculatorHistoryResource extends JsonResource
     {
         $history = new History();
         $history->user_id = $requestData['user_id'];
-        $history->variables = json_encode($requestData['variables'], JSON_UNESCAPED_UNICODE);
+        $history->variables = $requestData['variables'];
         $history->save();
 
         return $history;
