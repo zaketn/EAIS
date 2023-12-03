@@ -2,16 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\History;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CalculatorHistoryResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return [
@@ -21,5 +17,21 @@ class CalculatorHistoryResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];
+    }
+    public static function saveData(array $requestData)
+    {
+        $history = new History();
+        $history->user_id = $requestData['user_id'];
+        $history->variables = json_encode($requestData['variables'], JSON_UNESCAPED_UNICODE);
+        $history->save();
+
+        return $history;
+    }
+
+    public static function getRecord($id)
+    {
+        $history = History::findOrFail($id);
+
+        return new CalculatorHistoryResource($history);
     }
 }

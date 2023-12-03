@@ -4,6 +4,7 @@ import Input from "@/Components/Partials/Input.vue";
 import Navbar from "@/Components/Partials/Navbar.vue";
 import Button from "@/Components/Partials/Button.vue";
 import {ref} from "vue";
+import {useRoute} from "vue-router";
 
 const chartDataDemand = ref()
 const chartDataIncome = ref()
@@ -46,6 +47,38 @@ const luxuryGoodsShare = ref()
 const consumerSpendingEssentials = ref()
 const consumerSpendingDurable = ref()
 const consumerSpendingLuxury = ref()
+const history = ref()
+
+
+const route = useRoute()
+
+const getHistory = async () => {
+    await axios.get('/api/history/' + route.params.id)
+        .then((response) => {
+            console.log(response.data)
+            //console.log(JSON.parse(response.data.variables))
+            //history.value.variables = JSON.parse(response.data.variables)
+        })
+}
+
+
+
+
+/*if (route.path.includes('history')) {
+    consumerIncome.value =
+    householdAverage.value =
+    householdGrowth.value =
+    variableHouseholdIncome.value =
+    amountOfSavings.value =
+    disposableResources.value =
+    lumpSumTaxes.value =
+    essentialItemsShare.value =
+    durableGoodsShare.value =
+    luxuryGoodsShare.value =
+    consumerSpendingEssentials.value =
+    consumerSpendingDurable.value =
+    consumerSpendingLuxury.value =
+}*/
 
 const getCalculatorSettings = async () => {
     await axios.get('/api/calculator-parameters')
@@ -59,6 +92,7 @@ const getCalculatorSettings = async () => {
             calculatorSettings.value = settings
         })
         .catch((error) => console.log(error))
+    console.log(calculatorSettings.value)
 }
 
 const loadExpertDataIfNotSet = async () => {
@@ -96,6 +130,8 @@ const getCalculatedParameters = async () => {
 
     // Средняя склонность домашнего хозяйства к потреблению
     calculated.avgHouseholdPropensityToConsume = 1 - parseFloat(amountOfSavings.value) / parseFloat(disposableResources.value)
+
+    await saveDataToDatabase()
 }
 
 const calculateEssentials = (purchasingPower) => {
@@ -131,7 +167,7 @@ const calculate = async () => {
     let dataDemand = []
     let dataIncome = []
 
-    for (let purchasingPower = 0; purchasingPower < 120000; purchasingPower += 384) {
+    for (let purchasingPower = 0; purchasingPower < 120000; purchasingPower += 768) {
         const essentials = calculateEssentials(purchasingPower)
         const longTerm = calculateLongTerm(purchasingPower)
         const luxuryItems = calculateLuxury(purchasingPower)
@@ -198,6 +234,41 @@ const inputPopovers = {
     consumer_spending_durable: 'В рублях',
     consumer_spending_luxury: 'В рублях',
 }
+
+const saveDataToDatabase = async () => {
+    const dataToSave = {
+        consumerIncome: consumerIncome.value,
+        householdAverage: householdAverage.value,
+        householdGrowth: householdGrowth.value,
+        variableHouseholdIncome: variableHouseholdIncome.value,
+        amountOfSavings: amountOfSavings.value,
+        disposableResources: disposableResources.value,
+        lumpSumTaxes: lumpSumTaxes.value,
+        essentialItemsShare: essentialItemsShare.value,
+        durableGoodsShare: durableGoodsShare.value,
+        luxuryGoodsShare: luxuryGoodsShare.value,
+        consumerSpendingEssentials: consumerSpendingEssentials.value,
+        consumerSpendingDurable: consumerSpendingDurable.value,
+        consumerSpendingLuxury: consumerSpendingLuxury.value,
+        livingWage: calculatorSettings.value.living_wage,
+        luxuryLowerLimit: calculatorSettings.value.luxury_lower_limit,
+        incomeTaxRate: calculatorSettings.value.income_tax_rate,
+    };
+
+    const jsonDataToSave = JSON.stringify(dataToSave);
+
+    try {
+        const response = await axios.post('/api/calculator-history/save-history', { variables: jsonDataToSave });
+        if (response.status >= 200 && response.status < 300) {
+            console.log('Сохранено');
+        }
+    } catch (error) {
+        console.error('Ошибка: ', error);
+    }
+};
+
+console.log(route.params.id);
+
 </script>
 
 <template>

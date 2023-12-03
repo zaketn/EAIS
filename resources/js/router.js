@@ -80,6 +80,14 @@ const routes = [
         name: 'settings.incomeCalculator'
     },
     {
+        path: '/history/:id',
+        component: IncomeCalculator,
+        meta: {
+            permissions: permissions.auth
+        },
+        name: 'historyId'
+    },
+    {
         path: '/history',
         component: History,
         meta: {
@@ -94,7 +102,7 @@ const routes = [
             permissions: permissions.guest
         },
         name: 'registration'
-    }
+    },
 ]
 
 export const router = createRouter({

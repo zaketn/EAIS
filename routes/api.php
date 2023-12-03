@@ -33,4 +33,7 @@ Route::resource('/users', UserController::class);
 Route::resource('/roles', RoleController::class);
 Route::resource('/calculator-parameters', CalculatorParametersController::class);
 
+Route::get('/history/{id}', [CalculatorHistoryController::class, 'getRecord']);
+Route::post('/calculator-history/save-history', [CalculatorHistoryController::class, 'saveData']);
 Route::resource('/calculator-history', CalculatorHistoryController::class);
+
