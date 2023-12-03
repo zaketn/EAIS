@@ -5,26 +5,28 @@ import Navbar from "@/Components/Partials/Navbar.vue";
 import Button from "@/Components/Partials/Button.vue";
 import {ref} from "vue";
 
-const chartData = {
-    labels: ['', '', ''],
+const chartDataDemand = ref()
+const chartDataIncome = ref()
+
+const chartData = ref({
+    labels: Array.from(Array(120000).keys()),
     datasets: [
         {
             label: 'Величина(объем) спроса на предметы первой необходимости, предметы длительного пользования и предметы роскоши',
-            data: [3931 / 134, 90041 / 134, 82374 / 132],
+            data: chartDataDemand,
             borderColor: '#36A2EB',
             backgroundColor: '#9BD0F5',
             color: '#fff'
         },
         {
             label: 'Уровень дохода',
-            data: [886826 / 5262, 5242415 / 10652, 2933327 / 5262],
+            data: chartDataIncome,
             borderColor: '#FF6384',
             backgroundColor: '#FFB1C1',
         },
     ],
-}
+})
 
-const purchasingPower = 36564
 const calculatorSettings = ref()
 const calculated = {}
 
@@ -93,11 +95,11 @@ const getCalculatedParameters = async () => {
     calculated.avgHouseholdPropensityToConsume = 1 - parseFloat(amountOfSavings.value) / parseFloat(disposableResources.value)
 }
 
-const calculateEssentials = () => {
+const calculateEssentials = (purchasingPower) => {
     return (parseFloat(calculatorSettings.value.living_wage) * purchasingPower) / (purchasingPower + parseFloat(householdGrowth.value))
 }
 
-const calculateLongTerm = () => {
+const calculateLongTerm = (purchasingPower) => {
     let longTerm = 0
     if (purchasingPower > calculatorSettings.value.living_wage) {
         longTerm = calculated.saturationNeedsLimitForDurableGoods * (purchasingPower - parseFloat(calculatorSettings.value.living_wage)) / ((purchasingPower + parseFloat(householdGrowth.value)))
@@ -106,7 +108,7 @@ const calculateLongTerm = () => {
     return longTerm;
 }
 
-const calculateLuxury = () => {
+const calculateLuxury = (purchasingPower) => {
     let luxuryItems = 0
     if (purchasingPower > calculatorSettings.value.luxury_lower_limit) {
         luxuryItems = purchasingPower * (purchasingPower - calculatorSettings.value.luxury_lower_limit) / (purchasingPower + parseFloat(householdGrowth.value))
@@ -115,7 +117,7 @@ const calculateLuxury = () => {
     return luxuryItems
 }
 
-const calculateIncomeLevel = () => {
+const calculateIncomeLevel = (purchasingPower) => {
     return (parseFloat(variableHouseholdIncome.value) + purchasingPower * parseFloat(calculated.avgHouseholdPropensityToConsume)) *
         (1 - calculatorSettings.value.income_tax_rate) - parseFloat(lumpSumTaxes.value)
 }
@@ -123,12 +125,23 @@ const calculateIncomeLevel = () => {
 const calculate = async () => {
     await getCalculatedParameters()
 
-    const essentials = calculateEssentials()
-    const longTerm = calculateLongTerm()
-    const luxuryItems = calculateLuxury()
-    const demandEssentialsLuxury = essentials + longTerm + luxuryItems
-    const incomeLevel = calculateIncomeLevel()
-    const P = incomeLevel - demandEssentialsLuxury
+    let dataDemand = []
+    let dataIncome = []
+
+    for (let purchasingPower = 0; purchasingPower < 120000; purchasingPower += 12) {
+        const essentials = calculateEssentials(purchasingPower)
+        const longTerm = calculateLongTerm(purchasingPower)
+        const luxuryItems = calculateLuxury(purchasingPower)
+        const demandEssentialsLuxury = essentials + longTerm + luxuryItems
+        const incomeLevel = calculateIncomeLevel(purchasingPower)
+        const P = incomeLevel - demandEssentialsLuxury
+
+        dataDemand.push({x: purchasingPower, y: demandEssentialsLuxury})
+        dataIncome.push({x: purchasingPower, y: incomeLevel})
+    }
+
+    chartDataDemand.value = dataDemand
+    chartDataIncome.value = dataIncome
 }
 
 const inputLabels = {
@@ -169,7 +182,7 @@ const inputPopovers = {
 
     <div class="container mx-auto mt-3 px-3">
         <div class="container mb-5">
-            <Line :data="chartData"/>
+            <Line :chartData="chartData" v-if="chartDataDemand && chartDataIncome"/>
         </div>
         <div class="container">
             <form>
@@ -179,7 +192,7 @@ const inputPopovers = {
                     <legend class="text-gray-900 font-medium dark:text-white">Обязательные параметры.</legend>
                     <Input id="consumer_income"
                            type="number"
-                           v-model="consumerIncome"
+                           v-model.float="consumerIncome"
                            :label="inputLabels.consumer_income"
                            :popoverText="inputPopovers.consumer_income"/>
 

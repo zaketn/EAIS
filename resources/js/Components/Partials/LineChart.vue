@@ -1,26 +1,53 @@
 <script setup>
-import { Line } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
+
+import {onMounted, ref, watch} from "vue";
+import {Chart, registerables} from "chart.js";
+
+let line = null
 
 const props = defineProps({
     id: String,
     chartData: Object,
 })
 
-const chartOptions = {
-    responsive: true,
-}
+onMounted(() => {
+    line = new Chart(
+        document.getElementById('line-chart'), {
+            type: 'line',
+            data: props.chartData,
+            options: {
+                responsive: true,
+            }
+        }
+    )
 
-ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement)
+    line.render()
+})
+
+watch(props.chartData, () => {
+    line.destroy()
+
+    line = new Chart(
+        document.getElementById('line-chart'), {
+            type: 'line',
+            data: props.chartData,
+            options: {
+                responsive: true,
+            }
+        }
+    )
+
+    line.render()
+})
+
+
+
+Chart.register(...registerables)
 
 </script>
 
 <template>
-    <Line
-        :id="props.id"
-        :options="chartOptions"
-        :data="props.chartData"
-    />
+    <canvas id="line-chart"></canvas>
 </template>
 
 <style scoped>
