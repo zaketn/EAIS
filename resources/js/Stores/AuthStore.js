@@ -49,5 +49,25 @@ export const useAuthStore = defineStore('authStore', () => {
         return isAuthenticated
     }
 
-    return {user, login, checkAuth, logout}
+    async function register(email, password, name, password_confirmation) {
+        let registerData;
+
+        await axios.get('/sanctum/csrf-cookie')
+            .then(async () => {
+                return await axios.post('/register', {
+                    name: name,
+                    email: email,
+                    password: password,
+                    password_confirmation: password_confirmation
+                })
+                    .then((response) => {
+                        registerData = response.status;
+                    })
+                    .catch((error) => console.log(error));
+            });
+
+        return registerData;
+    }
+
+    return {user, login, checkAuth, logout, register}
 })
