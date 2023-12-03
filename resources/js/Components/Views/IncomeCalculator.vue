@@ -7,23 +7,26 @@ import {ref} from "vue";
 
 const chartDataDemand = ref()
 const chartDataIncome = ref()
+const dataIntersection = ref([])
 
 const chartData = ref({
     labels: Array.from(Array(120000).keys()),
     datasets: [
         {
+            type: 'line',
             label: 'Величина(объем) спроса на предметы первой необходимости, предметы длительного пользования и предметы роскоши',
             data: chartDataDemand,
             borderColor: '#36A2EB',
             backgroundColor: '#9BD0F5',
-            color: '#fff'
+            color: '#fff',
         },
         {
+            type: 'line',
             label: 'Уровень дохода',
             data: chartDataIncome,
             borderColor: '#FF6384',
             backgroundColor: '#FFB1C1',
-        },
+        }
     ],
 })
 
@@ -128,7 +131,7 @@ const calculate = async () => {
     let dataDemand = []
     let dataIncome = []
 
-    for (let purchasingPower = 0; purchasingPower < 120000; purchasingPower += 12) {
+    for (let purchasingPower = 0; purchasingPower < 120000; purchasingPower += 384) {
         const essentials = calculateEssentials(purchasingPower)
         const longTerm = calculateLongTerm(purchasingPower)
         const luxuryItems = calculateLuxury(purchasingPower)
@@ -136,12 +139,34 @@ const calculate = async () => {
         const incomeLevel = calculateIncomeLevel(purchasingPower)
         const P = incomeLevel - demandEssentialsLuxury
 
+        // Если разница в значениях меньше 120 - ставим линию, линия может быть одна на 1200 точек
+        if (Math.abs(demandEssentialsLuxury - incomeLevel) < 120) {
+            if(dataIntersection.value.length === 0){
+                dataIntersection.value.push(purchasingPower)
+            } else if (Math.abs(purchasingPower - dataIntersection.value[dataIntersection.value.length - 1]) > 1200) {
+                dataIntersection.value.push(purchasingPower)
+            }
+        }
+
         dataDemand.push({x: purchasingPower, y: demandEssentialsLuxury})
         dataIncome.push({x: purchasingPower, y: incomeLevel})
     }
 
     chartDataDemand.value = dataDemand
     chartDataIncome.value = dataIncome
+
+    for (let intersectionPoint of dataIntersection.value) {
+        const line = {
+            type: 'line',
+            axis: 'y',
+            label: 'Пересечение',
+            data: [{x: parseInt(intersectionPoint), y: 0}, {x: parseInt(intersectionPoint), y: 120000}],
+            borderColor: '#FFA500',
+            backgroundColor: '#FFA500',
+        }
+
+        chartData.value.datasets.push(line)
+    }
 }
 
 const inputLabels = {
