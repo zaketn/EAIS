@@ -32,10 +32,10 @@ class DownloadFiles extends Command
 
                 $xlsxContent = $r->body();
 
-                $folder = "exports/{$typeName}/"; // папка для типа
+                $folder = "exports/$typeName/"; // папка для типа
                 Storage::makeDirectory($folder); // создать папку еслди нет её
 
-                $filename = $curDate->format('Y_m') . ".xlsx"; // название файла
+                $filename = $curDate->format('Y_m_d') . ".xlsx"; // название файла
 
                 Storage::put($folder . $filename, $xlsxContent); // записать файл в формате "год_месяц"
 
