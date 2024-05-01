@@ -6,16 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class SupportForm extends Model
+class ImportedFile extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
+        'type'
     ];
 
-    public function supportTypes() : HasMany
+    public function supports() : HasMany
     {
-        return $this->hasMany(SupportType::class);
+        return $this->hasMany(Support::class);
     }
 }
