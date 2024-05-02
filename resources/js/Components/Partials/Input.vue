@@ -6,7 +6,7 @@ onMounted(() => {
     initFlowbite();
 })
 
-    const props = defineProps(['id', 'name', 'label', 'modelValue', 'type', 'display', 'popoverText'])
+    const props = defineProps(['id', 'name', 'label', 'modelValue', 'type', 'display', 'popoverText', 'readonly'])
     defineEmits(['update:modelValue'])
 
     const display = {
@@ -17,11 +17,17 @@ onMounted(() => {
         error: {
             label: 'text-red-700 dark:text-red-500',
             input: 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500'
+        },
+        readonly_input: {
+            label: 'text-gray-900 dark:text-white',
+            input: 'bg-gray-90 border-gray-900 text-gray-300 mb-3 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
         }
     }
 
     const labelStyle = computed(() => props.display === 'error' ? display.error.label : display.default.label)
     const inputStyle = computed(() => props.display === 'error' ? display.error.input : display.default.input)
+    //const inputClass = computed(() => props.readonly === 'true' ? display.readonly_input.input : display.default.input) чето я не смог так сделать
+    const inputClass = computed(() => props.readonly ? 'readonly-input' : '')
 </script>
 
 <template>
@@ -56,7 +62,8 @@ onMounted(() => {
                :value="modelValue"
                @input="$emit('update:modelValue', $event.target.value)"
                class="block w-full p-2.5 border text-sm rounded-lg"
-               :class="inputStyle"
+               :class="[inputStyle, inputClass]"
+               :readonly="props.readonly"
                required>
     </div>
 
@@ -64,5 +71,7 @@ onMounted(() => {
 
 
 <style scoped>
-
+.readonly-input {
+    background-color: #bbecce;
+}
 </style>
