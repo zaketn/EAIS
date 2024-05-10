@@ -30,6 +30,11 @@ const user = await userStore.getUser()
               :isShowed="user.data.role && user.data.role.name === 'Админ'"
               header="Настройки калькулятора"
               description="Настройте предустановленные значения для калькулятора"/>
+
+    <LinkCard :to="{name: 'buisnessCalculator'}"
+              :isShowed="true"
+              header="Бизнес-калькулятор"
+              description="Бизнес-калькулятор"/>
 </template>
 
 <style scoped>

@@ -9,6 +9,7 @@ import Login from "@/Components/Views/Auth/Login.vue";
 import {useAuthStore} from "@/Stores/AuthStore";
 import History from "@/Components/Views/History.vue";
 import Registration from "@/Components/Views/Auth/Registration.vue";
+import BuisnessCalculator from "@/Components/Views/BuisnessCalculator.vue";
 
 const permissions = {
     auth: {
@@ -102,6 +103,14 @@ const routes = [
             permissions: permissions.guest
         },
         name: 'registration'
+    },
+    {
+        path: '/buisness-calculator',
+        component: BuisnessCalculator,
+        meta: {
+            permissions: permissions.auth
+        },
+        name: 'buisnessCalculator'
     },
 ]
 

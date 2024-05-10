@@ -102,6 +102,12 @@ const logout = async () => {
                                          ref="statsLink">Калькулятор
                             </router-link>
                         </li>
+                        <li v-if="user.data.role && (user.data.role.name === 'Админ' || user.data.role.name === 'Менеджер')">
+                            <router-link :to="{ name: 'buisnessCalculator' }"
+                                         :class="[currentRouteName === 'buisness-calculator' ? linksClasses.active : linksClasses.default]"
+                                         ref="statsLink">Бизнес - калькулятор
+                            </router-link>
+                        </li>
                         <li>
                             <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbarProfile"
                                     @click="toggleProfileDropdown"
