@@ -14,7 +14,8 @@ class History extends Model
     protected $table = 'history';
     protected $fillable = [
         'user_id',
-        'variables'
+        'variables',
+        'type'
     ];
     protected $casts = [
         'variables' => JsonWithoutSlashes::class,

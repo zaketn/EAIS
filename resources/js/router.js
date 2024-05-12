@@ -112,6 +112,14 @@ const routes = [
         },
         name: 'buisnessCalculator'
     },
+    {
+        path: '/history/buisness-calculator/:id',
+        component: BuisnessCalculator,
+        meta: {
+            permissions: permissions.auth
+        },
+        name: 'BuisnessHistoryId'
+    },
 ]
 
 export const router = createRouter({

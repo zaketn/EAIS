@@ -1,7 +1,8 @@
 <script setup>
 import Input from "@/Components/Partials/Input.vue";
 import Navbar from "@/Components/Partials/Navbar.vue";
-import {ref} from "vue";
+import Button from "@/Components/Partials/Button.vue";
+import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import { computed } from "vue";
 
@@ -207,7 +208,94 @@ const returnOnInvestmentAnnualizedWithoutTax = computed(() => { //65 ROI (воз
     ).toFixed(0);
 });
 
+onMounted(async () => {
+    if (route.path.includes('history')) {
+        await getHistory()
+        isHistoryPage.value = true
 
+        equipmentAndMachinery.value = history.value.equipmentAndMachinery
+        technologyDevelopment.value = history.value.technologyDevelopment
+        buyingProperty.value = history.value.buyingProperty
+        stock.value = history.value.stock
+
+        salariesEmployees.value = history.value.salariesEmployees
+        communicationSoftwareRental.value = history.value.communicationSoftwareRental
+        officeOrRetailSpaceRental.value = history.value.officeOrRetailSpaceRental
+        loanInterestExpenses.value = history.value.loanInterestExpenses
+        otherAdministrativeExpenses.value = history.value.otherAdministrativeExpenses
+
+        monthlyAdvertisingExpenses.value = history.value.monthlyAdvertisingExpenses
+        customerRetentionExpenses.value = history.value.customerRetentionExpenses
+        managerBonusPercentage.value = history.value.managerBonusPercentage
+        deliveryCostPerTransaction.value = history.value.deliveryCostPerTransaction
+        acquiringFeePercentage.value = history.value.acquiringFeePercentage
+
+        averagePurchasePricePerUnit.value = history.value.averagePurchasePricePerUnit
+        supplierDeliveryCostPerUnit.value = history.value.supplierDeliveryCostPerUnit
+        averageRetailPricePerUnit.value = history.value.averageRetailPricePerUnit
+
+        advertisingCampaignCoverage.value = history.value.advertisingCampaignCoverage
+        websiteStoreConversionRate.value = history.value.websiteStoreConversionRate
+        conversionToCartLeadConsultationRate.value = history.value.conversionToCartLeadConsultationRate
+        paymentConversionRate.value = history.value.paymentConversionRate
+        numberOfPastCustomers.value = history.value.numberOfPastCustomers
+        repeatPurchaseConversionRate.value = history.value.repeatPurchaseConversionRate
+        averageNumberOfItemsPerTransaction.value = history.value.averageNumberOfItemsPerTransaction
+    }
+})
+
+const getHistory = async () => {
+    await axios.get('/api/history/buisness-calculator/' + route.params.id)
+        .then((response) => {
+            historyDate.value = response.data.data.created_at
+            history.value = JSON.parse(response.data.data.variables)
+        })
+}
+
+const saveDataToDatabase = async () => {
+    const dataToSave = {
+        equipmentAndMachinery: equipmentAndMachinery.value,
+        technologyDevelopment: technologyDevelopment.value,
+        buyingProperty: buyingProperty.value,
+        stock: stock.value,
+
+        salariesEmployees: salariesEmployees.value,
+        communicationSoftwareRental: communicationSoftwareRental.value,
+        officeOrRetailSpaceRental: officeOrRetailSpaceRental.value,
+        loanInterestExpenses: loanInterestExpenses.value,
+        otherAdministrativeExpenses: otherAdministrativeExpenses.value,
+
+        monthlyAdvertisingExpenses: monthlyAdvertisingExpenses.value,
+        customerRetentionExpenses: customerRetentionExpenses.value,
+        managerBonusPercentage: managerBonusPercentage.value,
+        deliveryCostPerTransaction: deliveryCostPerTransaction.value,
+        acquiringFeePercentage: acquiringFeePercentage.value,
+
+        averagePurchasePricePerUnit: averagePurchasePricePerUnit.value,
+        supplierDeliveryCostPerUnit: supplierDeliveryCostPerUnit.value,
+        averageRetailPricePerUnit: averageRetailPricePerUnit.value,
+
+        advertisingCampaignCoverage: advertisingCampaignCoverage.value,
+        websiteStoreConversionRate: websiteStoreConversionRate.value,
+        conversionToCartLeadConsultationRate: conversionToCartLeadConsultationRate.value,
+        paymentConversionRate: paymentConversionRate.value,
+        numberOfPastCustomers: numberOfPastCustomers.value,
+        repeatPurchaseConversionRate: repeatPurchaseConversionRate.value,
+        averageNumberOfItemsPerTransaction: averageNumberOfItemsPerTransaction.value,
+
+    };
+
+    const jsonDataToSave = JSON.stringify(dataToSave);
+
+    try {
+        const response = await axios.post('/api/calculator-history/save-history', { variables: jsonDataToSave, type:'2' });
+        if (response.status >= 200 && response.status < 300) {
+            console.log('Сохранено');
+        }
+    } catch (error) {
+        console.error('Ошибка: ', error);
+    }
+};
 
 
 const inputLabels = {
@@ -317,6 +405,7 @@ const inputPopovers = {
     </Suspense>
 
     <div class="container mx-auto mt-3 px-3">
+        <h1 v-if="isHistoryPage" class="text-4xl mb-4 font-extrabold dark:text-white">История: {{ historyDate }}</h1>
         <div class="container flex flex-wrap justify-between">
             <form class="flex flex-wrap w-full" >
                 <!-- Первая строка блоков -->
@@ -663,6 +752,7 @@ const inputPopovers = {
                     <fieldset class="flex-auto border-solid rounded p-5 mb-3">
                     </fieldset>
                 </div>
+                <Button @click.prevent="saveDataToDatabase" v-if="!isHistoryPage" text="Сохранить"/>
             </form>
         </div>
     </div>
