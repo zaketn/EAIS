@@ -10,6 +10,7 @@ import {useAuthStore} from "@/Stores/AuthStore";
 import History from "@/Components/Views/History.vue";
 import Registration from "@/Components/Views/Auth/Registration.vue";
 import BuisnessCalculator from "@/Components/Views/BuisnessCalculator.vue";
+import GovernmentSupport from "./Components/Views/GovernmentSupport.vue";
 
 const permissions = {
     auth: {
@@ -112,6 +113,14 @@ const routes = [
         },
         name: 'buisnessCalculator'
     },
+    {
+        path: '/government-support',
+        component: GovernmentSupport,
+        meta: {
+            permissions: permissions.auth
+        },
+        name: 'governmentSupport'
+    }
 ]
 
 export const router = createRouter({

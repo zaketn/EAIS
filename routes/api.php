@@ -2,22 +2,11 @@
 
 use App\Http\Controllers\Calculator\CalculatorParametersController;
 use App\Http\Controllers\CalculatorHistoryController;
+use App\Http\Controllers\Rmsp\StatisticsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 Route::middleware(['auth:sanctum'])->get('/user', [UserController::class, 'current'])
     ->name('api.user');
@@ -37,3 +26,9 @@ Route::get('/history/{id}', [CalculatorHistoryController::class, 'getRecord']);
 Route::post('/calculator-history/save-history', [CalculatorHistoryController::class, 'saveData']);
 Route::resource('/calculator-history', CalculatorHistoryController::class);
 
+Route::controller(StatisticsController::class)->prefix('/statistics')->group(function() {
+    Route::post('/by-regions', 'byRegions');
+    Route::post('/by-company-type', 'byCompanyType');
+    Route::post('/by-support-type', 'bySupportType');
+    Route::post('/years', 'getYears');
+});

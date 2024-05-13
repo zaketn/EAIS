@@ -10,7 +10,6 @@ const user = await userStore.getUser()
 </script>
 
 <template>
-
     <LinkCard :to="{name: 'tables'}"
               :isShowed="user.data.role && user.data.role.name === 'Админ'"
               header="Таблицы"
@@ -30,6 +29,11 @@ const user = await userStore.getUser()
               :isShowed="user.data.role && user.data.role.name === 'Админ'"
               header="Настройки калькулятора"
               description="Настройте предустановленные значения для калькулятора"/>
+
+    <LinkCard :to="{name: 'governmentSupport'}"
+              :isShowed="true"
+              header="Поддержка государства"
+              description="Просмотр, оказываемой бизнесу, поддержки государством"/>
 
     <LinkCard :to="{name: 'buisnessCalculator'}"
               :isShowed="true"

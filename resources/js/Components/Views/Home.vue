@@ -10,7 +10,7 @@ import Navbar from "@/Components/Partials/Navbar.vue";
     </Suspense>
 
         <div class="container mx-auto p-3">
-            <div class="flex gap-8 md:flex-col">
+            <div class="flex flex-wrap justify-center gap-8 md:flex-col">
                 <Suspense>
                     <NavigationCards />
                 </Suspense>

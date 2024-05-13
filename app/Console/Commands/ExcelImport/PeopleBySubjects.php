@@ -4,6 +4,7 @@ namespace App\Console\Commands\ExcelImport;
 
 use App\Enums\WorksheetType;
 use App\Services\RmspImport\ImportPeopleByFormsService;
+use App\Services\RmspImport\ImportPeopleBySubjectsService;
 use Illuminate\Console\Command;
 
 class PeopleBySubjects extends Command
@@ -15,7 +16,7 @@ class PeopleBySubjects extends Command
 
     public function handle()
     {
-        $service = new ImportPeopleByFormsService(
+        $service = new ImportPeopleBySubjectsService(
             WorksheetType::PEOPLE_BY_REGIONS,
             'exports/people_by_subjects'
         );
