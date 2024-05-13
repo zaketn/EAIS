@@ -14,32 +14,32 @@ export const useTotalResultsStore = defineStore('bcTotalResultsStore', () => {
     //Итоговые результаты
     const revenueInRubles = computed(() => { //64 Выручка, рубли
         return (
-            parseFloat(funnelMetrics.totalNumberOfSales.value) *
-            parseFloat(funnelMetrics.averageTransactionValue.value)
+            parseFloat(funnelMetrics.totalNumberOfSales) *
+            parseFloat(funnelMetrics.averageTransactionValue)
         ).toFixed(0);
     });
     const grossProfitInRubles = computed(() => { //67 Маржинальная прибыль, рубли
         return (
             parseFloat(revenueInRubles.value) -
-            parseFloat(variableCosts.totalVariableCosts.value)
+            parseFloat(variableCosts.totalVariableCosts)
         ).toFixed(0);
     });
     const profitBeforeTaxesInRubles = computed(() => { //69 Прибыль до налогов, рубли
         return (
             parseFloat(grossProfitInRubles.value) -
-            parseFloat(fixedCosts.totalFixedCostsIncludingAllEmployeeTaxes.value)
+            parseFloat(fixedCosts.totalFixedCostsIncludingAllEmployeeTaxes)
         ).toFixed(0);
     });
     const investmentPaybackPeriodInMonths = computed(() => { //66 Сроки окупаемости инвестиций, месяцев (без учета налогов на прибыль)
         return (
-            parseFloat(investment.totalInvestmentVolume.value) /
+            parseFloat(investment.totalInvestmentVolume) /
             parseFloat(profitBeforeTaxesInRubles.value)
         ).toFixed(0);
     });
     const returnOnInvestmentAnnualizedWithoutTax = computed(() => { //65 ROI (возврат инвестиций за год, без учета налогов), %
         return (
             (parseFloat(profitBeforeTaxesInRubles.value) * 12 /
-                parseFloat(investment.totalInvestmentVolume.value)) * 100
+                parseFloat(investment.totalInvestmentVolume)) * 100
         ).toFixed(0);
     });
 
