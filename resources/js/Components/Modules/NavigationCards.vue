@@ -39,6 +39,11 @@ const user = await userStore.getUser()
               :isShowed="true"
               header="Бизнес-калькулятор"
               description="Бизнес-калькулятор"/>
+
+    <LinkCard :to="{name: 'aiRecommendations'}"
+              :isShowed="true"
+              header="Рекомендации от ИИ"
+              description="Получите персональные рекоммендации от ИИ, с учётом особенностей вашего бизнеса"/>
 </template>
 
 <style scoped>

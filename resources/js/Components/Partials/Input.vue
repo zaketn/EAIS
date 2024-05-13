@@ -32,7 +32,7 @@ onMounted(() => {
 
 <template>
     <div>
-        <label for="first_name"
+        <label :for="props.id"
                class="block mb-2 text-sm font-medium"
                :class="labelStyle" >
             {{ props.label }}

@@ -11,6 +11,7 @@ import History from "@/Components/Views/History.vue";
 import Registration from "@/Components/Views/Auth/Registration.vue";
 import BuisnessCalculator from "@/Components/Views/BuisnessCalculator.vue";
 import GovernmentSupport from "./Components/Views/GovernmentSupport.vue";
+import AiRecommendations from "./Components/Views/AiRecommendations.vue";
 
 const permissions = {
     auth: {
@@ -120,6 +121,14 @@ const routes = [
             permissions: permissions.auth
         },
         name: 'governmentSupport'
+    },
+    {
+        path: '/ai-recommendations',
+        component: AiRecommendations,
+        meta: {
+            permissions: permissions.auth
+        },
+        name: 'aiRecommendations'
     }
 ]
 
