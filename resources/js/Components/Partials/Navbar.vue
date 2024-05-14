@@ -10,9 +10,6 @@ onMounted(() => {
     initFlowbite();
 })
 
-// TODO: Сделать обновление пользователя при входе/выходе из аккаунта
-// TODO: Починить работу выпадающих списков
-
 const userStore = useUserStore()
 const user = ref(await userStore.getUser())
 const authStore = useAuthStore()
@@ -130,13 +127,6 @@ const logout = async () => {
                                         <router-link :to="{ name: 'home' }"
                                                      class="text-center block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
                                             Профиль
-                                        </router-link>
-                                    </li>
-                                    <li>
-                                        <router-link :to="{ name: 'settings.incomeCalculator' } "
-                                                     v-if="user.data.role.name === 'Админ'"
-                                                     class="text-center block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
-                                            Настройки калькулятора
                                         </router-link>
                                     </li>
                                     <li>

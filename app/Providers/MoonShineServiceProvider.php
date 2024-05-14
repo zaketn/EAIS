@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\MoonShine\Resources\CalculatorParametersResource;
+use App\MoonShine\Resources\CalculatorParameterTypesResource;
 use MoonShine\Providers\MoonShineApplicationServiceProvider;
 use MoonShine\MoonShine;
 use MoonShine\Menu\MenuGroup;
@@ -39,8 +41,13 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
     protected function menu(): array
     {
         return [
+            MenuGroup::make('Калькулятор', [
+                MenuItem::make('Параметры калькулятора', new CalculatorParametersResource()),
+                MenuItem::make('Типы параметров калькулятора', new CalculatorParameterTypesResource())
+            ])->icon('heroicons.calculator'),
+
             MenuItem::make(
-                static fn() => 'Пользователи',
+                'Пользователи',
                 new MoonShineUserResource()
             ),
             MenuItem::make(

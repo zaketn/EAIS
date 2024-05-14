@@ -25,11 +25,6 @@ const user = await userStore.getUser()
               header="Калькулятор"
               description="Идентификация диапазонов благосостояния"/>
 
-    <LinkCard :to="{name: 'settings.incomeCalculator'}"
-              :isShowed="user.data.role && user.data.role.name === 'Админ'"
-              header="Настройки калькулятора"
-              description="Настройте предустановленные значения для калькулятора"/>
-
     <LinkCard :to="{name: 'governmentSupport'}"
               :isShowed="true"
               header="Поддержка государства"

@@ -4,7 +4,6 @@ import Users from "./Components/Views/Users.vue";
 import Tables from "./Components/Views/Tables.vue";
 import Statistics from "./Components/Views/Statistics.vue";
 import IncomeCalculator from "@/Components/Views/IncomeCalculator.vue";
-import IncomeCalculatorSettings from "@/Components/Views/IncomeCalculatorSettings.vue";
 import Login from "@/Components/Views/Auth/Login.vue";
 import {useAuthStore} from "@/Stores/AuthStore";
 import History from "@/Components/Views/History.vue";
@@ -73,14 +72,6 @@ const routes = [
             permissions: permissions.auth
         },
         name: 'incomeCalculator'
-    },
-    {
-        path: '/settings/income-calculator',
-        component: IncomeCalculatorSettings,
-        meta: {
-            permissions: permissions.auth
-        },
-        name: 'settings.incomeCalculator'
     },
     {
         path: '/history/:id',
