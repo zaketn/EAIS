@@ -1,7 +1,6 @@
 import Home from "./Components/Views/Home.vue";
 import History from "./Components/Views/History.vue";
 import Tables from "./Components/Views/Tables.vue";
-import Statistics from "./Components/Views/Statistics.vue";
 import GovernmentSupport from "./Components/Views/GovernmentSupport.vue";
 import AiRecommendations from "./Components/Views/AiRecommendations.vue";
 import {permissions} from "./permissions";
@@ -34,14 +33,6 @@ export const routes = [
             permissions: permissions.auth
         },
         name: 'tables',
-    },
-    {
-        path: '/statistics',
-        component: Statistics,
-        meta: {
-            permissions: permissions.auth
-        },
-        name: 'statistics'
     },
     {
         path: '/income-calculator',
