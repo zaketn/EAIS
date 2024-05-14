@@ -1,57 +1,41 @@
 <script setup>
-import {computed, onBeforeMount, onMounted, ref} from 'vue';
-import axios from 'axios';
-import { PlusCircleIcon } from '@heroicons/vue/24/outline';
-import { Modal } from 'flowbite';
-import Table from '../Partials/Table.vue'
-import AddTable from "../Modals/ImportTable.vue";
+import {onMounted, ref} from 'vue';
 import Navbar from "@/Components/Partials/Navbar.vue";
 import Breadcrumbs from "../Partials/Breadcrumbs.vue";
+import {useStatisticsStore} from "../../Stores/StatisticsStore";
+import Select from "../Partials/Select.vue";
+import {useSupportStore} from "../../Stores/SupportStore";
+import Button from "../Partials/Button.vue";
 
+const statisticsStore = useStatisticsStore()
+const supportStore = useSupportStore()
 
-const tablesMeta = ref({})
+const years = ref(null)
 const selectedYear = ref(null)
-const selectedTable = ref(null)
-const tableData = ref(null)
 
-let importModal = undefined
-let fbModal = undefined
+const supportTypes = ref(null)
+const selectedSupportType = ref(null)
 
-const years = computed({
-    get: () => Object.keys(tablesMeta.value),
-    set: undefined
+const supportForms = ref(null)
+const selectedSupportForm = ref(null)
+
+const supportUnitTypes = ref(null)
+const selectedSupportUnitType = ref(null)
+
+onMounted(async () => {
+    years.value = await statisticsStore.years()
+
+    supportTypes.value = await supportStore.getEntity('support-type')
+    supportForms.value = await supportStore.getEntity('support-form')
+    supportUnitTypes.value = await supportStore.getEntity('support-unit-type')
 })
-
-const tables = computed({
-    get: () => tablesMeta.value[parseInt(selectedYear.value)],
-    set: undefined
-})
-
-onBeforeMount(() => {
-    getTablesMeta()
-})
-
-onMounted(() => {
-    importModal = document.getElementById('addTableModal')
-    fbModal = new Modal(importModal)
-})
-
-const getTableData = () => axios
-    .get(`/api/tables/${selectedTable.value}`)
-    .then((response) => tableData.value = JSON.parse(response.data.data))
-    .catch((response) => console.log(response.data))
-
-const getTablesMeta = () => axios
-    .get('/api/tables')
-    .then((response) => tablesMeta.value = response.data)
-    .catch((response) => console.log(response.data))
 
 </script>
 
 
 <template>
     <Suspense>
-        <Navbar />
+        <Navbar/>
     </Suspense>
 
     <div class="container mx-auto mt-3 px-3">
@@ -59,48 +43,43 @@ const getTablesMeta = () => axios
         <breadcrumbs :elements="[{text: 'Табличные данные', url: '/tables'}]"/>
 
         <div class="flex justify-between dark:text-white">
-            <p class="text-2xl text-gray-900 dark:text-white">Выберите таблицу для просмотра</p>
-            <button
-                @click="fbModal.show()"
-                type="button"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                <PlusCircleIcon class="h-6 w-6 text-white" />
-            </button>
-            <Teleport to="#modal-container">
-                <AddTable :modal-object="fbModal" @data-added="getTablesMeta"/>
-            </Teleport>
+            <p class="text-2xl text-gray-900 dark:text-white font-bold text-2xl">
+                Реестр поддержки государством малого и среднего бизнеса
+            </p>
+
+            <Button text="Применить" />
         </div>
 
-        <div class="flex py-2">
-            <div class="w-fit">
-                <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Год</label>
-                <select id="year"
-                        v-model="selectedYear"
-                        class="rounded-l-lg bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option disabled>Год</option>
-                    <option v-for="year in years" :value="year" :key="year">
-                        {{ year }}
-                    </option>
-                </select>
-            </div>
-            <div class="grow" ref="tableBlock">
-                <label for="table" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Таблица</label>
-                <select
-                    @change="getTableData"
-                    v-model="selectedTable"
-                    id="table"
-                    class="rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm focus:ring-blue-500 focus:border-blue-500 w-full block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option disabled>Таблица</option>
-                    <option v-for="(table, index) in tables" :value="table.id" :key="index">
-                        {{ table.name }}
-                    </option>
-                </select>
-            </div>
+        <div class="flex justify-between gap-2 py-4">
+            <Select v-model="selectedYear" id="year" label="Год" disabled-value="Выберите год">
+                <option v-for="year in years" :value="year" :key="year">
+                    {{ year }}
+                </option>
+            </Select>
+
+            <Select v-model="selectedSupportType" id="support-type" label="Тип поддердки"
+                    disabled-value="Выберите тип поддержки">
+                <option v-for="supportType in supportTypes" :value="supportType" :key="supportType">
+                    {{ supportType.name }}
+                </option>
+            </Select>
+
+            <Select v-model="selectedSupportForm" id="support-form" label="Форма поддердки"
+                    disabled-value="Выберите форму поддержки">
+                <option v-for="supportForm in supportForms" :value="supportForm" :key="supportForm">
+                    {{ supportForm.name }}
+                </option>
+            </Select>
+
+            <Select v-model="selectedSupportUnitType" id="support-unit-type" label="Единица поддержки"
+                    disabled-value="Выберите единицу поддержки">
+                <option v-for="supportUnitType in supportUnitTypes" :value="supportUnitType" :key="supportUnitType">
+                    {{ supportUnitType.name }}
+                </option>
+            </Select>
         </div>
     </div>
-    <div class="container mx-auto px-3" v-if="tableData !== null">
-        <div id="table-block">
-            <Table :data="tableData" height="700px"/>
-        </div>
+    <div class="container mx-auto px-3">
+
     </div>
 </template>

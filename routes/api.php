@@ -3,20 +3,21 @@
 use App\Http\Controllers\Calculator\CalculatorParametersController;
 use App\Http\Controllers\CalculatorHistoryController;
 use App\Http\Controllers\Rmsp\StatisticsController;
-use App\Http\Controllers\TableController;
+use App\Http\Controllers\Rmsp\SupportFormController;
+use App\Http\Controllers\Rmsp\SupportTypeController;
+use App\Http\Controllers\Rmsp\SupportUnitTypeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->group(function() {
-    Route::get('/user', [UserController::class, 'current'])
-        ->name('api.user');
+    Route::get('/user', [UserController::class, 'current'])->name('api.user');
 
-    Route::resource('tables', TableController::class)->only([
-        'index', 'show', 'store'
-    ]);
+    Route::resource('/support-form', SupportFormController::class)->only(['index', 'show']);
+    Route::resource('/support-type', SupportTypeController::class)->only(['index', 'show']);
+    Route::resource('/support-unit-type', SupportUnitTypeController::class)->only(['index', 'show']);
 
     Route::get('/users/current', [UserController::class, 'current']);
-    Route::resource('/users', UserController::class);
+    Route::resource('/users', UserController::class)->only('index');
 
     Route::resource('/calculator-parameters', CalculatorParametersController::class);
 
