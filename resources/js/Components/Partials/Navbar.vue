@@ -73,33 +73,26 @@ const logout = async () => {
                      ref="burgerMenu">
                     <ul v-if="user"
                         class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
-                        <li v-if="user.data.role && user.data.role.name === 'Админ'">
-                            <router-link :to="{ name: 'users' }"
-                                         :class="[currentRouteName === 'users' ? linksClasses.active : linksClasses.default]"
-                                         ref="tablesLink">
-                                Пользователи
-                            </router-link>
-                        </li>
-                        <li v-if="user.data.role && user.data.role.name === 'Админ'">
+                        <li>
                             <router-link :to="{ name: 'tables' }"
                                          :class="[currentRouteName === 'tables' ? linksClasses.active : linksClasses.default]"
                                          ref="tablesLink">
                                 Таблицы
                             </router-link>
                         </li>
-                        <li v-if="user.data.role && (user.data.role.name === 'Админ' || user.data.role.name === 'Менеджер')">
+                        <li>
                             <router-link :to="{ name: 'statistics' }"
                                          :class="[currentRouteName === 'statistics' ? linksClasses.active : linksClasses.default]"
                                          ref="statsLink">Статистика
                             </router-link>
                         </li>
-                        <li v-if="user.data.role && (user.data.role.name === 'Админ' || user.data.role.name === 'Менеджер')">
+                        <li>
                             <router-link :to="{ name: 'incomeCalculator' }"
                                          :class="[currentRouteName === 'income-calculator' ? linksClasses.active : linksClasses.default]"
                                          ref="statsLink">Калькулятор
                             </router-link>
                         </li>
-                        <li v-if="user.data.role && (user.data.role.name === 'Админ' || user.data.role.name === 'Менеджер')">
+                        <li>
                             <router-link :to="{ name: 'buisnessCalculator' }"
                                          :class="[currentRouteName === 'buisness-calculator' ? linksClasses.active : linksClasses.default]"
                                          ref="statsLink">Бизнес - калькулятор

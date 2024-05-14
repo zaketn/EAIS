@@ -3,7 +3,6 @@
 use App\Http\Controllers\Calculator\CalculatorParametersController;
 use App\Http\Controllers\CalculatorHistoryController;
 use App\Http\Controllers\Rmsp\StatisticsController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -16,10 +15,8 @@ Route::resource('tables', TableController::class)->only([
 ]);
 
 Route::get('/users/current', [UserController::class, 'current']);
-Route::post('/users/update-role', [UserController::class, 'updateRole']);
 Route::resource('/users', UserController::class);
 
-Route::resource('/roles', RoleController::class);
 Route::resource('/calculator-parameters', CalculatorParametersController::class);
 
 Route::get('/history/{id}', [CalculatorHistoryController::class, 'getRecord']);

@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
-use App\Models\Role;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -53,17 +51,5 @@ class UserController extends Controller
         }
 
         return null;
-    }
-
-    public function updateRole(Request $request): Model
-    {
-        $user = User::query()->findOrFail($request->userId);
-        $role = Role::query()->findOrFail($request->roleId);
-
-        $user->update([
-            'role_id' => $role->id
-        ]);
-
-        return $user;
     }
 }

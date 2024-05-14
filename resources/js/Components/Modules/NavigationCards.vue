@@ -11,7 +11,7 @@ const user = await userStore.getUser()
 
 <template>
     <LinkCard :to="{name: 'tables'}"
-              :isShowed="user.data.role && user.data.role.name === 'Админ'"
+              :isShowed="true"
               header="Таблицы"
               description="Просмотр таблиц с сайта "/>
 

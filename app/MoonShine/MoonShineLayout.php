@@ -31,14 +31,12 @@ final class MoonShineLayout implements MoonShineLayoutContract
             ]),
             LayoutBlock::make([
                 Flash::make(),
-                Header::make([
-                    Search::make(),
-                ]),
+                Header::make(),
                 Content::make(),
                 Footer::make()
                     ->copyright(fn(): string => sprintf(
                         <<<'HTML'
-                            &copy; 2022-%d
+                            &copy; 2023-%d
                             <span>EAIS</span>
                         HTML,
                         now()->year
