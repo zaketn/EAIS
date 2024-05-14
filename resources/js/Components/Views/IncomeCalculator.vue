@@ -5,6 +5,7 @@ import Navbar from "@/Components/Partials/Navbar.vue";
 import Button from "@/Components/Partials/Button.vue";
 import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
+import {useHelpersStore} from "../../Stores/HelpersStore";
 
 const route = useRoute()
 
@@ -14,6 +15,8 @@ const historyDate = ref()
 const chartDataDemand = ref()
 const chartDataIncome = ref()
 const dataIntersection = ref([])
+
+const helpersStore = useHelpersStore()
 
 const chartData = ref({
     labels: Array.from(Array(120000).keys()),
@@ -282,7 +285,7 @@ const saveDataToDatabase = async () => {
     </Suspense>
 
     <div class="container mx-auto mt-3 px-3">
-        <h1 v-if="isHistoryPage" class="text-4xl mb-4 font-extrabold dark:text-white">История: {{ historyDate }}</h1>
+        <h1 v-if="isHistoryPage" class="text-4xl mb-4 font-extrabold dark:text-white">История: {{ helpersStore.localizeDate(historyDate) }}</h1>
         <div class="container mb-5">
             <Line :chartData="chartData" v-if="chartDataDemand && chartDataIncome"/>
         </div>

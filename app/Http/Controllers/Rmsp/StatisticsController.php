@@ -62,27 +62,25 @@ class StatisticsController extends Controller
 
         $year = $request->post('year');
 
-        $companyTypes = [
-            'Микропредприятия',
-            'Малые предприятия',
-            'Средние предприятия',
-            'Самозанятые'
-        ];
+        $companyTypes = CompanyType::query()
+            ->select(['name'])
+            ->distinct()
+            ->get();
 
         $result = [];
 
         foreach($companyTypes as $companyType) {
             if($year !== null) {
-                $result[$companyType] = $supports->withCount([
+                $result[$companyType->name] = $supports->withCount([
                     'supports' => function(Builder $query) use($companyType, $year) {
                         $query->whereYear('date', $year)
-                            ->whereHas('companyType', fn(Builder $query) => $query->where('name', $companyType));
+                            ->whereHas('companyType', fn(Builder $query) => $query->where('name', $companyType->name));
                     }
                 ])->get();
             } else {
-                $result[$companyType] = $supports->withCount([
+                $result[$companyType->name] = $supports->withCount([
                     'supports' => function(Builder $query) use($companyType, $year) {
-                        $query->whereHas('companyType', fn(Builder $query) => $query->where('name', $companyType));
+                        $query->whereHas('companyType', fn(Builder $query) => $query->where('name', $companyType->name));
                     }
                 ])->get();
             }

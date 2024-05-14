@@ -7,17 +7,7 @@ use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
-    public function home() : View
-    {
-        return view('home');
-    }
-
-    public function tables() : View
-    {
-        return view('home');
-    }
-
-    public function statistics(): View
+    public function __invoke() : View
     {
         return view('home');
     }

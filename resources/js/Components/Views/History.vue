@@ -2,9 +2,11 @@
 import {onBeforeMount, ref} from "vue";
 import Breadcrumbs from "@/Components/Partials/Breadcrumbs.vue";
 import Navbar from "@/Components/Partials/Navbar.vue";
+import {useHelpersStore} from "../../Stores/HelpersStore";
 
 
 const stories = ref()
+const helpersStore = useHelpersStore()
 
 onBeforeMount(async () => {
     await getHistory()
@@ -40,7 +42,7 @@ const getHistory = async () => {
                 <tr v-for="history in stories"
                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        {{ history.created_at }}
+                        {{ helpersStore.localizeDate(history.created_at) }}
                     </th>
                     <td class="px-6 py-4">
                         <router-link :to="{ name: 'historyId', params: { id: history.id }}">Перейти</router-link>

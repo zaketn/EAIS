@@ -5,9 +5,8 @@ use App\Http\Controllers\ProcessController;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/{vue_capture?}', [IndexController::class, 'home'])
-    ->where('vue_capture', '[\/\w\.-]*')
-    ->name('home');
+Route::get('/{vue_capture?}', IndexController::class)
+    ->where('vue_capture', '[\/\w\.-]*');
 
 Route::middleware('auth')->group(function () {
     Route::controller(ProcessController::class)->group(function () {

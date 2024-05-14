@@ -77,7 +77,7 @@ const logout = async () => {
                             <router-link :to="{ name: 'tables' }"
                                          :class="[currentRouteName === 'tables' ? linksClasses.active : linksClasses.default]"
                                          ref="tablesLink">
-                                Таблицы
+                                Реестр поддержки
                             </router-link>
                         </li>
                         <li>
@@ -110,12 +110,6 @@ const logout = async () => {
                                  class="absolute z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-800 dark:divide-gray-600">
                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-400"
                                     aria-labelledby="dropdownLargeButton">
-                                    <li>
-                                        <router-link :to="{ name: 'home' }"
-                                                     class="text-center block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
-                                            Профиль
-                                        </router-link>
-                                    </li>
                                     <li>
                                         <router-link :to="{ name: 'history' }"
                                                      class="text-center block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
