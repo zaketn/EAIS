@@ -34,7 +34,7 @@ const getRecommendations = async () => {
     prompt += 'Рекомендации:\n' + 'Дай 5 конкретных рекомендаций, которые помогут улучшить этот бизнес. Учитывай всю предоставленную информацию, чтобы сделать рекомендации максимально релевантными.'
 
     const openai = new OpenAI({
-        apiKey: '',
+        apiKey: import.meta.env.VITE_AI_API_KEY,
         dangerouslyAllowBrowser: true
     });
 
@@ -77,7 +77,7 @@ const getRecommendations = async () => {
             </form>
 
             <div class="w-1/2 flex flex-col gap-4 bg-gray-50 p-4 rounded dark:bg-gray-800">
-                <p v-if="!aiMessage && loading === false" class="block p-3 rounded bg-yellow-600 dark:text-white">
+                <p v-if="!aiMessage && loading === false" class="block p-3 rounded bg-yellow-600 text-white">
                     Заполните поля, характеризующие ваш бизнес, тут появятся рекомендации от нейронной сети.
                 </p>
 
