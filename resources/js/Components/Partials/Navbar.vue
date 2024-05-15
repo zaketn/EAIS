@@ -117,6 +117,12 @@ const logout = async () => {
                                         </router-link>
                                     </li>
                                     <li>
+                                        <router-link :to="{ name: 'usefulLinks' }"
+                                                     class="text-center block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
+                                            Полезные ссылки
+                                        </router-link>
+                                    </li>
+                                    <li>
                                         <button
                                             @click="switchTheme"
                                             class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">

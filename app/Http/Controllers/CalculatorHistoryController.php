@@ -55,6 +55,7 @@ class CalculatorHistoryController extends Controller
         $requestData = [
             'user_id' => $request->user()->id,
             'variables' => $request->input('variables'),
+            'type' => $request->input('type', 1),
         ];
 
         $savedData = CalculatorHistoryResource::saveData($requestData);
