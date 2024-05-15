@@ -26,8 +26,8 @@ onMounted(() => {
 
     const labelStyle = computed(() => props.display === 'error' ? display.error.label : display.default.label)
     const inputStyle = computed(() => props.display === 'error' ? display.error.input : display.default.input)
-    //const inputClass = computed(() => props.readonly === 'true' ? display.readonly_input.input : display.default.input) чето я не смог так сделать
     const inputClass = computed(() => props.readonly ? 'readonly-input' : '')
+
 </script>
 
 <template>

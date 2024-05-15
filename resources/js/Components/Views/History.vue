@@ -20,7 +20,7 @@ const getHistory = async () => {
 
 <template>
     <Suspense>
-        <Navbar />
+        <Navbar/>
     </Suspense>
 
     <div class="container mx-auto p-3">
@@ -34,6 +34,11 @@ const getHistory = async () => {
                     <th scope="col" class="px-6 py-3">
                         Дата
                     </th>
+                    <th scope="col" class="px-6 py-3">
+                        Тип
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,7 +48,11 @@ const getHistory = async () => {
                         {{ history.created_at }}
                     </th>
                     <td class="px-6 py-4">
-                        <router-link :to="{ name: 'historyId', params: { id: history.id }}">Перейти</router-link>
+                        {{ history.type === 1 ? 'Калькулятор' : 'Бизнес-калькулятор' }}
+                    </td>
+                    <td class="px-6 py-4">
+                        <router-link v-if="history.type === 1" :to="{ name: 'historyId', params: { id: history.id }}">Перейти</router-link>
+                        <router-link v-else :to="{ name: 'BuisnessHistoryId', params: { id: history.id }}">Перейти</router-link>
                     </td>
                 </tr>
                 </tbody>
