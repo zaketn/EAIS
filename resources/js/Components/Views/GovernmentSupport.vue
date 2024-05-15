@@ -1,20 +1,18 @@
 <script setup>
 
 import Navbar from "../Partials/Navbar.vue";
-import {onMounted, ref, watch} from "vue";
-import BarChart from "../Partials/BarChart.vue";
+import {onMounted, ref} from "vue";
 import ChartBlock from "../Statistics/ChartBlock.vue";
 import {useStatisticsStore} from "../../Stores/StatisticsStore";
+import Select from "../Partials/Select.vue";
 
 const selectedYear = ref(null)
 const years = ref(null)
 
 const statisticsStore = useStatisticsStore()
 
-onMounted(() => {
-    axios.post('/api/statistics/years').then((response) => {
-        years.value = response.data
-    });
+onMounted(async () => {
+    years.value = await statisticsStore.years()
 })
 
 </script>
@@ -29,17 +27,11 @@ onMounted(() => {
         <div>
 
             <form class="max-w-sm mx-auto">
-                <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Выберите год
-                </label>
-                <select v-model="selectedYear"
-                        id="year"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option :value="null" selected>Все года</option>
-                    <option v-for="year in years" :value="year">
+                <Select v-model="selectedYear" id="year" label="Год" disabled-value="Выберите год">
+                    <option v-for="year in years" :value="year" :key="year">
                         {{ year }}
                     </option>
-                </select>
+                </Select>
             </form>
 
         </div>

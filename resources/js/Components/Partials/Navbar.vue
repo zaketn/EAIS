@@ -10,9 +10,6 @@ onMounted(() => {
     initFlowbite();
 })
 
-// TODO: Сделать обновление пользователя при входе/выходе из аккаунта
-// TODO: Починить работу выпадающих списков
-
 const userStore = useUserStore()
 const user = ref(await userStore.getUser())
 const authStore = useAuthStore()
@@ -76,33 +73,20 @@ const logout = async () => {
                      ref="burgerMenu">
                     <ul v-if="user"
                         class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
-                        <li v-if="user.data.role && user.data.role.name === 'Админ'">
-                            <router-link :to="{ name: 'users' }"
-                                         :class="[currentRouteName === 'users' ? linksClasses.active : linksClasses.default]"
-                                         ref="tablesLink">
-                                Пользователи
-                            </router-link>
-                        </li>
-                        <li v-if="user.data.role && user.data.role.name === 'Админ'">
+                        <li>
                             <router-link :to="{ name: 'tables' }"
                                          :class="[currentRouteName === 'tables' ? linksClasses.active : linksClasses.default]"
                                          ref="tablesLink">
-                                Таблицы
+                                Реестр поддержки
                             </router-link>
                         </li>
-                        <li v-if="user.data.role && (user.data.role.name === 'Админ' || user.data.role.name === 'Менеджер')">
-                            <router-link :to="{ name: 'statistics' }"
-                                         :class="[currentRouteName === 'statistics' ? linksClasses.active : linksClasses.default]"
-                                         ref="statsLink">Статистика
-                            </router-link>
-                        </li>
-                        <li v-if="user.data.role && (user.data.role.name === 'Админ' || user.data.role.name === 'Менеджер')">
+                        <li>
                             <router-link :to="{ name: 'incomeCalculator' }"
                                          :class="[currentRouteName === 'income-calculator' ? linksClasses.active : linksClasses.default]"
                                          ref="statsLink">Калькулятор
                             </router-link>
                         </li>
-                        <li v-if="user.data.role && (user.data.role.name === 'Админ' || user.data.role.name === 'Менеджер')">
+                        <li>
                             <router-link :to="{ name: 'buisnessCalculator' }"
                                          :class="[currentRouteName === 'buisness-calculator' ? linksClasses.active : linksClasses.default]"
                                          ref="statsLink">Бизнес - калькулятор
@@ -126,19 +110,6 @@ const logout = async () => {
                                  class="absolute z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-800 dark:divide-gray-600">
                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-400"
                                     aria-labelledby="dropdownLargeButton">
-                                    <li>
-                                        <router-link :to="{ name: 'home' }"
-                                                     class="text-center block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
-                                            Профиль
-                                        </router-link>
-                                    </li>
-                                    <li>
-                                        <router-link :to="{ name: 'settings.incomeCalculator' } "
-                                                     v-if="user.data.role.name === 'Админ'"
-                                                     class="text-center block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
-                                            Настройки калькулятора
-                                        </router-link>
-                                    </li>
                                     <li>
                                         <router-link :to="{ name: 'history' }"
                                                      class="text-center block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">

@@ -1,6 +1,16 @@
 import {defineStore} from "pinia";
+import {computed} from "vue";
 
 export const useStatisticsStore = defineStore('statisticsStore', () => {
+    const years = async () => {
+        let years
+        await axios.post('/api/statistics/years').then((response) => {
+            years = response.data
+        });
+
+        return years
+    }
+
     const byRegion = async (chartData, year) => {
         await axios.post('/api/statistics/by-regions', {
             year: year.value
@@ -63,6 +73,7 @@ export const useStatisticsStore = defineStore('statisticsStore', () => {
     }
 
     return {
+        years,
         byRegion,
         byCompanyType,
         bySupportType
