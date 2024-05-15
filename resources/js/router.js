@@ -12,6 +12,7 @@ import Registration from "@/Components/Views/Auth/Registration.vue";
 import BuisnessCalculator from "@/Components/Views/BuisnessCalculator.vue";
 import GovernmentSupport from "./Components/Views/GovernmentSupport.vue";
 import AiRecommendations from "./Components/Views/AiRecommendations.vue";
+import UsefulLinks from "./Components/Views/UsefulLinks.vue";
 
 const permissions = {
     auth: {
@@ -115,6 +116,14 @@ const routes = [
         name: 'buisnessCalculator'
     },
     {
+        path: '/history/buisness-calculator/:id',
+        component: BuisnessCalculator,
+        meta: {
+            permissions: permissions.auth
+        },
+        name: 'BuisnessHistoryId'
+    },
+    {
         path: '/government-support',
         component: GovernmentSupport,
         meta: {
@@ -129,6 +138,14 @@ const routes = [
             permissions: permissions.auth
         },
         name: 'aiRecommendations'
+    },
+    {
+        path: '/useful-links',
+        component: UsefulLinks,
+        meta: {
+            permissions: permissions.auth
+        },
+        name: 'usefulLinks'
     }
 ]
 
