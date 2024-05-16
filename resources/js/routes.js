@@ -8,6 +8,7 @@ import IncomeCalculator from "./Components/Views/IncomeCalculator.vue";
 import Registration from "./Components/Views/Auth/Registration.vue";
 import BuisnessCalculator from "./Components/Views/BuisnessCalculator.vue";
 import Login from "./Components/Views/Auth/Login.vue";
+import UsefulLinks from "@/Components/Views/UsefulLinks.vue";
 
 export const routes = [
     {
@@ -89,5 +90,21 @@ export const routes = [
             permissions: permissions.auth
         },
         name: 'aiRecommendations'
+    },
+    {
+        path: '/useful-links',
+        component: UsefulLinks,
+        meta: {
+            permissions: permissions.auth
+        },
+        name: 'usefulLinks'
+    },
+    {
+        path: '/history/buisness-calculator/:id',
+        component: BuisnessCalculator,
+        meta: {
+            permissions: permissions.auth
+        },
+        name: 'BuisnessHistoryId'
     }
 ]
