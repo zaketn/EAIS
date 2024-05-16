@@ -2,7 +2,11 @@
 
 use App\Http\Controllers\Calculator\CalculatorParametersController;
 use App\Http\Controllers\CalculatorHistoryController;
+use App\Http\Controllers\Rmsp\CompanyTypeController;
+use App\Http\Controllers\Rmsp\DistrictController;
+use App\Http\Controllers\Rmsp\RegionController;
 use App\Http\Controllers\Rmsp\StatisticsController;
+use App\Http\Controllers\Rmsp\SupportController;
 use App\Http\Controllers\Rmsp\SupportFormController;
 use App\Http\Controllers\Rmsp\SupportTypeController;
 use App\Http\Controllers\Rmsp\SupportUnitTypeController;
@@ -12,9 +16,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/user', [UserController::class, 'current'])->name('api.user');
 
-    Route::resource('/support-form', SupportFormController::class)->only(['index', 'show']);
-    Route::resource('/support-type', SupportTypeController::class)->only(['index', 'show']);
-    Route::resource('/support-unit-type', SupportUnitTypeController::class)->only(['index', 'show']);
+    Route::get('/support', [SupportController::class, 'index']);
+    Route::get('/support-form', [SupportFormController::class, 'index']);
+    Route::get('/support-type', [SupportTypeController::class, 'index']);
+    Route::get('/support-unit-type', [SupportUnitTypeController::class, 'index']);
+    Route::get('/district', [DistrictController::class, 'index']);
+    Route::get('/region', [RegionController::class, 'index']);
+    Route::get('/company-type', [CompanyTypeController::class, 'index']);
 
     Route::get('/users/current', [UserController::class, 'current']);
     Route::resource('/users', UserController::class)->only('index');

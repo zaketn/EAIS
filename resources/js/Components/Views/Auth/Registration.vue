@@ -33,11 +33,7 @@ const registerUser = async () => {
 </script>
 
 <template>
-    <Suspense>
-        <Navbar />
-    </Suspense>
-
-    <section class="container mx-auto">
+    <section class="container mx-auto mt-14">
         <div class="bg-gray-50 dark:bg-gray-900 w-1/2 mx-auto">
             <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                 <div

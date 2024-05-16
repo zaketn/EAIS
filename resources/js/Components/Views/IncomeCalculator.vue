@@ -285,7 +285,7 @@ const saveDataToDatabase = async () => {
     </Suspense>
 
     <div class="container mx-auto mt-3 px-3">
-        <h1 v-if="isHistoryPage" class="text-4xl mb-4 font-extrabold dark:text-white">История: {{ helpersStore.localizeDate(historyDate) }}</h1>
+        <h1 v-if="isHistoryPage" class="text-4xl mb-4 font-extrabold dark:text-white">История: {{ helpersStore.localizeDateTime(historyDate) }}</h1>
         <div class="container mb-5">
             <Line :chartData="chartData" v-if="chartDataDemand && chartDataIncome"/>
         </div>

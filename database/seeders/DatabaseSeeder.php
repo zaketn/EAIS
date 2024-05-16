@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
     protected function fillOwnerTypes() :void
     {
         $ownerTypes = [
-            'Индивидуальные предпринематели',
+            'Индивидуальные предприниматели',
             'Юридические лица'
         ];
 
