@@ -1,5 +1,8 @@
 <script setup>
 import {onBeforeMount} from "vue";
+import {useRoute} from "vue-router";
+
+const route = useRoute()
 
 onBeforeMount(() => {
 
@@ -19,7 +22,7 @@ const themeInit = () => {
 </script>
 
 <template>
-    <router-view></router-view>
+    <router-view :key="route.path"></router-view>
 
     <div id="modal-container"></div>
 </template>

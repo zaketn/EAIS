@@ -10,6 +10,8 @@ use App\Http\Controllers\Rmsp\SupportController;
 use App\Http\Controllers\Rmsp\SupportFormController;
 use App\Http\Controllers\Rmsp\SupportTypeController;
 use App\Http\Controllers\Rmsp\SupportUnitTypeController;
+use App\Http\Controllers\TableController;
+use App\Http\Controllers\UsefulLinksController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,10 +30,15 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('/users', UserController::class)->only('index');
 
     Route::resource('/calculator-parameters', CalculatorParametersController::class);
-
+  
     Route::get('/history/{id}', [CalculatorHistoryController::class, 'getRecord']);
     Route::post('/calculator-history/save-history', [CalculatorHistoryController::class, 'saveData']);
     Route::resource('/calculator-history', CalculatorHistoryController::class);
+    Route::get('/history/{id}', [CalculatorHistoryController::class, 'getRecord']);
+    Route::get('/history/buisness-calculator/{id}', [CalculatorHistoryController::class, 'getRecord']);
+    Route::post('/calculator-history/save-history', [CalculatorHistoryController::class, 'saveData']);
+    Route::resource('/calculator-history', CalculatorHistoryController::class);
+    Route::resource('/useful-links', UsefulLinksController::class);
 
     Route::controller(StatisticsController::class)->prefix('/statistics')->group(function() {
         Route::post('/by-regions', 'byRegions');
