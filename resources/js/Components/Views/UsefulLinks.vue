@@ -69,9 +69,9 @@ const sendUsefulLink = () => {
         <Breadcrumbs :elements="[{text: 'Тематические ресурсы', url: '/useful-links'}]"/>
 
         <div class="flex justify-end">
-            <Modal id="suggest" button-text="Предложить свой источник" accept-button="Перейти">
+            <Modal id="suggest" button-text="Предложить свой ресурс" accept-button="Перейти">
                 <template #header>
-                    <h3 class="font-bold text-2xl dark:text-white">Предложить полезный источник</h3>
+                    <h3 class="font-bold text-2xl dark:text-white">Предложить тематический ресурс</h3>
                 </template>
                 <template #body>
                     <div v-if="alert.display === true"
