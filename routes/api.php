@@ -22,7 +22,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::resource('/users', UserController::class)->only('index');
 
     Route::resource('/calculator-parameters', CalculatorParametersController::class);
-  
+
     Route::get('/history/{id}', [CalculatorHistoryController::class, 'getRecord']);
     Route::post('/calculator-history/save-history', [CalculatorHistoryController::class, 'saveData']);
     Route::resource('/calculator-history', CalculatorHistoryController::class);

@@ -10,8 +10,15 @@ class UsefulLinks extends Model
     use HasFactory;
 
     protected $table = 'useful_links';
+
     protected $fillable = [
         'name',
-        'link'
+        'description',
+        'url',
+        'draft'
+    ];
+
+    protected $casts = [
+        'draft' => 'boolean'
     ];
 }

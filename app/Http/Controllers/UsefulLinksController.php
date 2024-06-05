@@ -10,7 +10,7 @@ class UsefulLinksController extends Controller
 {
     public function index(): Collection
     {
-        return UsefulLinks::all();
+        return UsefulLinks::query()->where('draft', false)->get();
     }
 
     public function create()
@@ -18,9 +18,22 @@ class UsefulLinksController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(Request $request) : bool
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'url' => 'required|url'
+        ]);
+
+        $result = UsefulLinks::query()->create([
+            'name' => $request->post('name'),
+            'description' => $request->post('description'),
+            'url' => $request->post('url'),
+            'draft' => true
+        ]);
+
+        return (bool)$result;
     }
 
     public function show(string $id)

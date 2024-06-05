@@ -36,4 +36,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(History::class);
     }
+
+    public function suggestedLinks()
+    {
+        return $this->hasMany(SuggestedLink::class);
+    }
 }

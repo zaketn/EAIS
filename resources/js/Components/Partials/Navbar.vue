@@ -83,7 +83,7 @@ const logout = async () => {
                         <li>
                             <router-link :to="{ name: 'incomeCalculator' }"
                                          :class="[currentRouteName === 'income-calculator' ? linksClasses.active : linksClasses.default]"
-                                         ref="statsLink">Калькулятор
+                                         ref="statsLink">Калькулятор диапазонов благосостояния
                             </router-link>
                         </li>
                         <li>

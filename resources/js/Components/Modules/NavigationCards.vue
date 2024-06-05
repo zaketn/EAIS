@@ -22,17 +22,17 @@ const user = await userStore.getUser()
 
     <LinkCard :to="{name: 'governmentSupport'}"
               :isShowed="true"
-              header="Поддержка государства"
+              header="Статистика о поддержке малого и среднего бизнеса государством"
               description="Просмотр, оказываемой бизнесу, поддержки государством"/>
 
     <LinkCard :to="{name: 'tables'}"
               :isShowed="true"
-              header="Таблицы"
-              description="Просмотр таблиц с сайта "/>
+              header="Реестр поддержки"
+              description="Просмотр реестра поддержки с сайта "/>
 
     <LinkCard :to="{name: 'incomeCalculator'}"
               :isShowed="true"
-              header="Калькулятор"
+              header="Калькулятор идентификации диапазонов благосостояния"
               description="Идентификация диапазонов благосостояния"/>
 </template>
 

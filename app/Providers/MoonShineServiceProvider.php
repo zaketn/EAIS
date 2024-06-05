@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\MoonShine\Resources\CalculatorParametersResource;
 use App\MoonShine\Resources\CalculatorParameterTypesResource;
+use App\MoonShine\Resources\UsefulLinksResource;
 use App\MoonShine\Resources\UserResource;
 use MoonShine\Providers\MoonShineApplicationServiceProvider;
 use MoonShine\Menu\MenuGroup;
@@ -43,7 +44,7 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
         return [
             MenuGroup::make('Калькулятор', [
                 MenuItem::make('Параметры калькулятора', new CalculatorParametersResource()),
-                MenuItem::make('Типы параметров калькулятора', new CalculatorParameterTypesResource())
+                MenuItem::make('Типы параметров калькулятора', new CalculatorParameterTypesResource()),
             ])->icon('heroicons.calculator'),
 
             MenuGroup::make('Пользователи', [
@@ -60,6 +61,8 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                     new MoonShineUserRoleResource()
                 ),
             ])->icon('heroicons.users'),
+
+            MenuItem::make('Полезные ссылки', new UsefulLinksResource()),
 
             MenuItem::make('Документация', 'https://moonshine-laravel.com', blank: true)
                 ->icon('heroicons.document'),
