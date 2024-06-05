@@ -5,6 +5,7 @@ import {onMounted, ref} from "vue";
 import ChartBlock from "../Statistics/ChartBlock.vue";
 import {useStatisticsStore} from "../../Stores/StatisticsStore";
 import Select from "../Partials/Select.vue";
+import Breadcrumbs from "../Partials/Breadcrumbs.vue";
 
 const selectedYear = ref(null)
 const years = ref(null)
@@ -23,6 +24,8 @@ onMounted(async () => {
     </Suspense>
 
     <div class="container flex flex-col gap-6 mx-auto mt-3 px-3">
+        <breadcrumbs :elements="[{text: 'Статистика поддержки государством', url: '/government-support'}]"/>
+
         <h1 class="text-3xl text-center font-bold dark:text-white">Поддержка малого бизнеса государством</h1>
         <div>
 

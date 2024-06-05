@@ -6,6 +6,7 @@ import Button from "@/Components/Partials/Button.vue";
 import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import {useHelpersStore} from "../../Stores/HelpersStore";
+import Breadcrumbs from "../Partials/Breadcrumbs.vue";
 
 const route = useRoute()
 
@@ -285,6 +286,8 @@ const saveDataToDatabase = async () => {
     </Suspense>
 
     <div class="container mx-auto mt-3 px-3">
+        <breadcrumbs :elements="[{text: 'Калькулятор идентификации диапазонов благосостояния', url: '/income-calculator'}]"/>
+
         <h1 v-if="isHistoryPage" class="text-4xl mb-4 font-extrabold dark:text-white">История: {{ helpersStore.localizeDate(historyDate) }}</h1>
         <div class="container mb-5">
             <Line :chartData="chartData" v-if="chartDataDemand && chartDataIncome"/>

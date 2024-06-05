@@ -66,7 +66,7 @@ const sendUsefulLink = () => {
     </Suspense>
 
     <div class="container mx-auto p-3">
-        <Breadcrumbs :elements="[{text: 'Полезные ссылки', url: '/history'}]"/>
+        <Breadcrumbs :elements="[{text: 'Тематические ресурсы', url: '/useful-links'}]"/>
 
         <div class="flex justify-end">
             <Modal id="suggest" button-text="Предложить свой источник" accept-button="Перейти">

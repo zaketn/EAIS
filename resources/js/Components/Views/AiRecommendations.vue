@@ -7,6 +7,7 @@ import {onMounted, ref} from "vue";
 import Button from "../Partials/Button.vue";
 import OpenAI from "openai";
 import {useAiRecommendationsStore} from "../../Stores/AiStore";
+import Breadcrumbs from "../Partials/Breadcrumbs.vue";
 
 const aiStore = useAiRecommendationsStore()
 
@@ -59,6 +60,8 @@ const getRecommendations = async () => {
 
 
     <div class="container flex flex-col gap-6 mx-auto mt-3 px-3">
+        <breadcrumbs :elements="[{text: 'Рекоммендации от ИИ', url: '/ai-recommendations'}]"/>
+
         <div class="flex justify-between gap-4">
             <form class="w-1/2 flex flex-col gap-4">
                 <div v-for="field in aiStore.fields">

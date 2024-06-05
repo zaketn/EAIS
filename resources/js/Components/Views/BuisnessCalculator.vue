@@ -18,6 +18,7 @@ import {useVariableCostsStore} from "@/Stores/BusinessCalculator/VariableCostsSt
 import {useCostPriceStore} from "@/Stores/BusinessCalculator/CostpriceStore";
 import {useFunnelControlStore} from "@/Stores/BusinessCalculator/FunnelControlStore";
 import {useComentStore} from "@/Stores/BusinessCalculator/ComentStore";
+import Breadcrumbs from "../Partials/Breadcrumbs.vue";
 
 const route = useRoute()
 
@@ -140,6 +141,8 @@ const saveDataToDatabase = async () => {
     </Suspense>
 
     <div class="container mx-auto mt-3 px-3">
+        <breadcrumbs :elements="[{text: 'Бизнес-калькулятор', url: '/buisness-calculator'}]"/>
+
         <h1 v-if="isHistoryPage" class="text-4xl mb-4 font-extrabold dark:text-white">История: {{ historyDate }}</h1>
         <div class="container flex flex-wrap justify-between">
             <form class="flex flex-wrap w-full">
