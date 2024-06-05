@@ -62,7 +62,7 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                 ),
             ])->icon('heroicons.users'),
 
-            MenuItem::make('Полезные ссылки', new UsefulLinksResource()),
+            MenuItem::make('Тематические ресурсы', new UsefulLinksResource()),
 
             MenuItem::make('Документация', 'https://moonshine-laravel.com', blank: true)
                 ->icon('heroicons.document'),

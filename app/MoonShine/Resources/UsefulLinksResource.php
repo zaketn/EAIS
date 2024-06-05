@@ -23,7 +23,7 @@ class UsefulLinksResource extends ModelResource
 {
     protected string $model = UsefulLinks::class;
 
-    protected string $title = 'Полезные ссылки';
+    protected string $title = 'Тематические ресурсы';
 
     public function fields(): array
     {

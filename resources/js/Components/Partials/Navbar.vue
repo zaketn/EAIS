@@ -54,7 +54,7 @@ const logout = async () => {
             <div
                 class="flex flex-wrap items-center justify-between p-4 rounded border-gray-700 bg-gray-100 dark:bg-gray-800">
                 <router-link :to="{ name: 'home' }" class="flex items-center">
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">ЕАИС</span>
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Поддержка деятельности МСП</span>
                 </router-link>
                 <button data-collapse-toggle="burger-dropdown" type="button"
                         class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -73,25 +73,6 @@ const logout = async () => {
                      ref="burgerMenu">
                     <ul v-if="user"
                         class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
-                        <li>
-                            <router-link :to="{ name: 'tables' }"
-                                         :class="[currentRouteName === 'tables' ? linksClasses.active : linksClasses.default]"
-                                         ref="tablesLink">
-                                Реестр поддержки
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link :to="{ name: 'incomeCalculator' }"
-                                         :class="[currentRouteName === 'income-calculator' ? linksClasses.active : linksClasses.default]"
-                                         ref="statsLink">Калькулятор диапазонов благосостояния
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link :to="{ name: 'buisnessCalculator' }"
-                                         :class="[currentRouteName === 'buisness-calculator' ? linksClasses.active : linksClasses.default]"
-                                         ref="statsLink">Бизнес - калькулятор
-                            </router-link>
-                        </li>
                         <li>
                             <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbarProfile"
                                     @click="toggleProfileDropdown"
@@ -113,20 +94,14 @@ const logout = async () => {
                                     <li>
                                         <router-link :to="{ name: 'history' }"
                                                      class="text-center block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
-                                            История
-                                        </router-link>
-                                    </li>
-                                    <li>
-                                        <router-link :to="{ name: 'usefulLinks' }"
-                                                     class="text-center block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
-                                            Полезные ссылки
+                                            История вычислений
                                         </router-link>
                                     </li>
                                     <li>
                                         <button
                                             @click="switchTheme"
                                             class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-black-900 font-bold">
-                                            Тема
+                                            Сменить тему
                                         </button>
                                     </li>
                                     <li>
